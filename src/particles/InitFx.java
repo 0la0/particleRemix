@@ -1,15 +1,12 @@
 package particles;
 
 
-import javafx.animation.*;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.stage.*;
+import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 

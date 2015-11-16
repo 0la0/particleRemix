@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
@@ -12,6 +13,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.SceneAntialiasing;
 
+
 public class DisplayNode {
 
 	private Group root = new Group();
@@ -19,8 +21,7 @@ public class DisplayNode {
 	private SubScene scene;
 	private Xform particleGroup = new Xform();
 	
-	private ArrayList<CubeParticle> particleList = new ArrayList<CubeParticle>();
-	private int particleSize = 5;
+	private ArrayList<Particle> particleList = new ArrayList<Particle>();
 	private double width;
 	private double height;
 	private final int NUM_PARTICLES = 4000;
@@ -37,6 +38,14 @@ public class DisplayNode {
 		this.buildParticles();
 		this.scene = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);
 		this.scene.setFill(Color.BLACK);
+		
+		AmbientLight light = new AmbientLight();
+	    light.setColor(Color.WHITE);
+	    
+	
+	    Group lightGroup = new Group();
+	    lightGroup.getChildren().add(light);
+	    root.getChildren().add(lightGroup);
 
 		DraggableFxWorld draggableWorld = new DraggableFxWorld(this.scene, this.root);		
 	}
@@ -46,12 +55,12 @@ public class DisplayNode {
 		for (int i = 0; i < NUM_PARTICLES; i++) {
 			Color color = Color.color(Math.random(), Math.random(), Math.random());
 			ParticleParameters p = new ParticleParameters(getRandPosition(), getRandPosition(), getRandPosition(), 50);
-			CubeParticle cubeParticle = new CubeParticle(color, p);
+			Particle cubeParticle = new Particle(color, p);
 			this.particleList.add(cubeParticle);
 		}
 	
-		for (CubeParticle cubeParticle : particleList) {
-			this.particleGroup.getChildren().addAll(cubeParticle.getCube().getBox());
+		for (Particle cubeParticle : particleList) {
+			this.particleGroup.getChildren().addAll(cubeParticle.getBox());
 		}
 		this.world.getChildren().addAll(this.particleGroup);
 	}
@@ -108,48 +117,5 @@ public class DisplayNode {
 		}
 	}
 	
-	
-	//TODO: move to seperate class after geometry gets hammered out
-	private class CubeParticle {
-		
-		private ParticleParameters particleParams = new ParticleParameters();
-		private Color color;
-		private Cube cube;
-		
-		public CubeParticle () {}
-		
-		public CubeParticle (Color c, ParticleParameters p) {
-			this.color = c;
-			this.particleParams = p;
-			this.cube = new Cube (particleSize, particleSize, particleSize, color, color);
-		}
-		
-		public void reset (ParticleParameters newParams) {
-			this.particleParams = newParams;
-			this.particleParams.ttl = (int) (newParams.ttl * Math.random());
-		}
-		
-		public Cube getCube () {
-			return this.cube;
-		}
-		
-		public void update (ParticleParameters p) {
-			this.particleParams.ttl--;
-			this.particleParams.x += p.x;
-			this.particleParams.y += p.y;
-			this.particleParams.z += p.z;
-			
-			cube.translate(this.particleParams.x, this.particleParams.y, this.particleParams.z);
-		}
-
-		public void setColor (Color c) {
-			cube.setColor(c);
-		}
-		
-		public boolean isDead () {
-			return this.particleParams.ttl <= 0;
-		}
-		
-	}
 
 }
