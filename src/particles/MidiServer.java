@@ -28,7 +28,6 @@ public class MidiServer {
 			this.midiDevice.open();
 			this.midiDevice.getTransmitter().setReceiver(new MidiInReceiver());
 		} catch (MidiUnavailableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -48,12 +47,6 @@ public class MidiServer {
 		@Override
 		public void send (MidiMessage msg, long timeStamp) {
 			ShortMessage sm = (ShortMessage) msg;
-			String dataFrame = sm.getCommand() + "," + sm.getChannel() + "," + sm.getData1() + "," + sm.getData2();
-			//-------SEND TO ALL OBSERVERS-------//
-			System.out.println("message received: " + dataFrame);
-//			for (WebSocket socket : server.connections()) {
-//				socket.send(dataFrame);
-//			}
 			runMidiMapping(sm);
 		}
 		
@@ -64,28 +57,25 @@ public class MidiServer {
 			return isCommand && isChannel && isData;
 		}
 		
-		
-		
 		private void runMidiMapping (ShortMessage sm) {
 			if (!messageIsTargeted(sm)) return;
-			System.out.println("run mapping");
-			int normalizedValue = (sm.getData2() - base) / magnitude;
 			
 			if (sm.getData1() == 37) {
-				particleParams.x = normalizedValue;
-				System.out.println("setting x at: " + particleParams.x);
+				particleParams.x = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 38) {
-				particleParams.y = normalizedValue;
+				particleParams.y = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 39) {
-				particleParams.z = normalizedValue;
+				particleParams.z = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 40) {
 				particleParams.ttl = sm.getData2();
 			}
-			
-			
+		}
+		
+		private int getNormalizedMidiValue (int realValue) {
+			return (realValue - base) / magnitude;
 		}
 		
 	}

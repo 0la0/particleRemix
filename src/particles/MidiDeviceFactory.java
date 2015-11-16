@@ -31,7 +31,6 @@ public class MidiDeviceFactory {
 				if (device.getMaxReceivers() != 0) receivers.add(device);
 				if (device.getMaxTransmitters() != 0) transmitters.add(device);
 			} catch (MidiUnavailableException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -60,7 +59,6 @@ public class MidiDeviceFactory {
 				try {
 					return midiDevice.getTransmitter();
 				} catch (MidiUnavailableException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -74,7 +72,6 @@ public class MidiDeviceFactory {
 				try {
 					return midiDevice.getReceiver();
 				} catch (MidiUnavailableException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -18,6 +18,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+/**
+ * Transparent javafx scene lifted and modified from:
+ * https://assylias.wordpress.com/2013/12/08/383/
+ */
 
 public class TransparentFrame {
 
@@ -54,31 +58,20 @@ public class TransparentFrame {
             }
         });
         
-        
-        //make the background of the label white and opaque
-        lbl.setStyle("-fx-background-color: rgba(255, 255, 255, 1);");
-
-        //add some borders to visualise the element' locations
-        //lbl.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, null, null)));
         p.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, null)));
 
         Scene scene = new Scene(p);
         stage.setScene(scene);
 
-        //this is where the transparency is achieved:
-        //the three layers must be made transparent
-        //(i)  make the VBox transparent (the 4th parameter is the alpha)
         p.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
-        //(ii) set the scene fill to transparent
         scene.setFill(null);
-        //(iii) set the stage background to transparent
         stage.initStyle(StageStyle.TRANSPARENT);
 
         stage.setWidth(200);
         stage.setHeight(100);
         stage.show();
         
-        
+        //Take screenshot of scene area every n milliseconds
         Timeline timeline = new Timeline(new KeyFrame(
             Duration.millis(200),
             actionEvent -> {
@@ -88,19 +81,15 @@ public class TransparentFrame {
             	int stageHeight = (int) stage.getHeight() - 2;
         		
         		Rectangle targetArea = new Rectangle(locationX, locationY, stageWidth, stageHeight);
-        	
-            	try {
+        		try {
             		setScreenCapture(new Robot().createScreenCapture(targetArea));
-            		//screenCapture = new Robot().createScreenCapture(targetArea);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
             })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-	        	
 	}
 	
 	private void setScreenCapture (BufferedImage screenCapture) {
