@@ -12,7 +12,8 @@ import javax.sound.midi.ShortMessage;
 public class MidiServer {
 	
 	private MidiDevice midiDevice;
-	private ParticleParameters particleParams = new ParticleParameters(1, 1, 1, 50);
+	private Vector3d currentVelocity = new Vector3d(Math.random(), Math.random(), Math.random());
+	private int ttlUpperBound = 20;
 	
 	public MidiServer () {
 		MidiDeviceFactory.refreshDevices();
@@ -32,9 +33,14 @@ public class MidiServer {
 		}
 	}
 	
-	public ParticleParameters getParticleParams () {
-		return this.particleParams;
+	public Vector3d getCurrentVelocity () {
+		return this.currentVelocity;
 	}
+	
+	public int getTtlUpperBound () {
+		return this.ttlUpperBound;
+	}
+	
 	
 	private class MidiInReceiver implements Receiver {
 		
@@ -61,16 +67,16 @@ public class MidiServer {
 			if (!messageIsTargeted(sm)) return;
 			
 			if (sm.getData1() == 37) {
-				particleParams.getWind().x = getNormalizedMidiValue(sm.getData2());
+				currentVelocity.x = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 38) {
-				particleParams.getWind().y = getNormalizedMidiValue(sm.getData2());
+				currentVelocity.y = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 39) {
-				particleParams.getWind().z = getNormalizedMidiValue(sm.getData2());
+				currentVelocity.z = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 40) {
-				particleParams.setTTL(sm.getData2());
+				ttlUpperBound = sm.getData2() + 2;
 			}
 		}
 		

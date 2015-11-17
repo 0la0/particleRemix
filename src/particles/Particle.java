@@ -27,15 +27,6 @@ public class Particle {
 		this.reset(position, velocity, color, ttl);
 	}
 	
-//	public void reset (ParticleParameters newParams) {
-//		//this.particleParams = newParams;
-//		this.position.x = newParams.getWind().x;
-//		this.position.y = newParams.getWind().y;
-//		this.position.z = newParams.getWind().z;
-//		
-//		this.ttl = (int) (newParams.ttl * Math.random());
-//	}
-	
 	public void reset (Vector3d position, Vector3d velocity, Color color, int ttl) {
 		this.position = position.clone();
 		this.velocity = velocity.clone();

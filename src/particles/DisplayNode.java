@@ -41,8 +41,6 @@ public class DisplayNode {
 		
 		AmbientLight light = new AmbientLight();
 	    light.setColor(Color.WHITE);
-	    
-	
 	    Group lightGroup = new Group();
 	    lightGroup.getChildren().add(light);
 	    root.getChildren().add(lightGroup);
@@ -54,12 +52,10 @@ public class DisplayNode {
 	private void buildParticles () {
 		for (int i = 0; i < NUM_PARTICLES; i++) {
 			Color color = Color.color(Math.random(), Math.random(), Math.random());
-			//ParticleParameters p = new ParticleParameters(getRandPosition(), getRandPosition(), getRandPosition(), 50);
 			Vector3d position = new Vector3d(getRandPosition(), getRandPosition(), 0);
-			Vector3d velocity = midiServer.getParticleParams().getWind().clone();
-			int ttl = midiServer.getParticleParams().getTTL();
+			Vector3d velocity = midiServer.getCurrentVelocity();
+			int ttl = midiServer.getTtlUpperBound();
 			Particle particle = new Particle(position, velocity, color, ttl);
-			//Particle cubeParticle = new Particle(color, );
 			this.particleList.add(particle);
 		}
 	
@@ -95,15 +91,23 @@ public class DisplayNode {
 				int xPosition = -x + (imageWidth / 2);
 				int yPosition = -y + (imageHeight / 2);
 				Vector3d position = new Vector3d(xPosition, yPosition, 0);
-				Vector3d wind = midiServer.getParticleParams().getWind();
-				int ttlMultiplier = midiServer.getParticleParams().getTTL();
+				Vector3d velocity = createNewVelocity(midiServer.getCurrentVelocity());
+				int ttlMultiplier = midiServer.getTtlUpperBound();
 				int ttl = (int) (ttlMultiplier * Math.random());
-				particle.reset(position, wind, color, ttl);
+				particle.reset(position, velocity, color, ttl);
 			}
 			else {
-				particle.update(midiServer.getParticleParams().getWind());
+				particle.update(midiServer.getCurrentVelocity());
 			}
 		});
+	}
+	
+	private Vector3d createNewVelocity (Vector3d currentWind) {
+		int vectorMultiplier = 10;
+		double x = vectorMultiplier * this.getPosNeg() * Math.random();
+		double y = vectorMultiplier * this.getPosNeg() * Math.random();
+		double z = vectorMultiplier * this.getPosNeg() * Math.random();
+		return new Vector3d(x, y, z);
 	}
 	
 	public Node getUiNode () {
