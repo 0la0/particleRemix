@@ -61,7 +61,7 @@ public class ParticleDriver {
 	}
 	
 	private Vector3d createNewVelocity (Vector3d currentWind) {
-		int vectorMultiplier = 10;
+		double vectorMultiplier = 0.5;
 		double x = vectorMultiplier * this.getPosNeg() * Math.random();
 		double y = vectorMultiplier * this.getPosNeg() * Math.random();
 		double z = vectorMultiplier * this.getPosNeg() * Math.random();

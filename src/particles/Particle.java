@@ -40,9 +40,14 @@ public class Particle {
 	
 	public void update (Vector3d wind) {
 		this.ttl--;
-		this.position.x += wind.x;
-		this.position.y += wind.y;
-		this.position.z += wind.z;
+		
+		this.velocity.x += wind.x;
+		this.velocity.y += wind.y;
+		this.velocity.z += wind.z;
+				
+		this.position.x += this.velocity.x;
+		this.position.y += this.velocity.y;
+		this.position.z += this.velocity.z;
 		
 		this.box.setTranslateX(this.position.x);
 		this.box.setTranslateY(this.position.y);

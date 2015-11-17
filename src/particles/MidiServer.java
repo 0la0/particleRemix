@@ -44,7 +44,7 @@ public class MidiServer {
 	
 	private class MidiInReceiver implements Receiver {
 		
-		private int magnitude = 16;
+		private int magnitude = 32;
 		private int base = 64;
 		
 		@Override
