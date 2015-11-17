@@ -8,7 +8,10 @@ import javafx.scene.transform.Rotate;
 public class Particle {
 
 	private final int PARTICLE_SIZE = 1;
-	private ParticleParameters particleParams = new ParticleParameters();
+	private Vector3d position = new Vector3d();
+	private Vector3d velocity = new Vector3d();
+	
+	private int ttl;
 	
 	private PhongMaterial material;
 	private Box box;
@@ -18,31 +21,41 @@ public class Particle {
 	private Rotate rz = new Rotate(0, Rotate.Z_AXIS);
 	
 	
-	public Particle (Color color, ParticleParameters p) {
-		this.particleParams = p;
+	public Particle (Vector3d position, Vector3d velocity, Color color, int ttl) {
 		this.box = new Box(PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_SIZE);
 		this.box.getTransforms().addAll(rz, ry, rx);
-		this.setColor(color);
+		this.reset(position, velocity, color, ttl);
 	}
 	
-	public void reset (ParticleParameters newParams) {
-		this.particleParams = newParams;
-		this.particleParams.ttl = (int) (newParams.ttl * Math.random());
+//	public void reset (ParticleParameters newParams) {
+//		//this.particleParams = newParams;
+//		this.position.x = newParams.getWind().x;
+//		this.position.y = newParams.getWind().y;
+//		this.position.z = newParams.getWind().z;
+//		
+//		this.ttl = (int) (newParams.ttl * Math.random());
+//	}
+	
+	public void reset (Vector3d position, Vector3d velocity, Color color, int ttl) {
+		this.position = position.clone();
+		this.velocity = velocity.clone();
+		this.ttl = ttl;
+		this.setColor(color);
 	}
 	
 	public Box getBox () {
 		return this.box;
 	}
 	
-	public void update (ParticleParameters p) {
-		this.particleParams.ttl--;
-		this.particleParams.x += p.x;
-		this.particleParams.y += p.y;
-		this.particleParams.z += p.z;
+	public void update (Vector3d wind) {
+		this.ttl--;
+		this.position.x += wind.x;
+		this.position.y += wind.y;
+		this.position.z += wind.z;
 		
-		this.box.setTranslateX(this.particleParams.x);
-		this.box.setTranslateY(this.particleParams.y);
-		this.box.setTranslateZ(this.particleParams.z);
+		this.box.setTranslateX(this.position.x);
+		this.box.setTranslateY(this.position.y);
+		this.box.setTranslateZ(this.position.z);
 	}
 
 	public void setColor (Color color) {
@@ -53,7 +66,7 @@ public class Particle {
 	}
 	
 	public boolean isDead () {
-		return this.particleParams.ttl <= 0;
+		return this.ttl <= 0;
 	}
 	
 	public void setRotate (double x, double y, double z) {

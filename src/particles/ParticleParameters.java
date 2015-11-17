@@ -1,25 +1,35 @@
 package particles;
 
 public class ParticleParameters {
-
-	public int x;
-	public int y;
-	public int z;
-	public int ttl;
+	
+	private int ttl;
+	private Vector3d wind = new Vector3d();
 	
 	public ParticleParameters () {}
 	
 	public ParticleParameters (int x, int y, int z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		wind.x = x;
+		wind.y = y;
+		wind.z = z;
 	}
 	
 	public ParticleParameters (int x, int y, int z, int ttl) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		wind.x = x;
+		wind.y = y;
+		wind.z = z;
 		this.ttl = ttl;
+	}
+	
+	public int getTTL () {
+		return this.ttl;
+	}
+	
+	public void setTTL (int ttl) {
+		this.ttl = ttl;
+	}
+	
+	public Vector3d getWind () {
+		return this.wind;
 	}
 	
 }

@@ -24,7 +24,7 @@ public class DisplayNode {
 	private ArrayList<Particle> particleList = new ArrayList<Particle>();
 	private double width;
 	private double height;
-	private final int NUM_PARTICLES = 4000;
+	private final int NUM_PARTICLES = 10000;
 	private WritableImage screenshot;
 	private MidiServer midiServer = new MidiServer();
 	
@@ -54,14 +54,18 @@ public class DisplayNode {
 	private void buildParticles () {
 		for (int i = 0; i < NUM_PARTICLES; i++) {
 			Color color = Color.color(Math.random(), Math.random(), Math.random());
-			ParticleParameters p = new ParticleParameters(getRandPosition(), getRandPosition(), getRandPosition(), 50);
-			Particle cubeParticle = new Particle(color, p);
-			this.particleList.add(cubeParticle);
+			//ParticleParameters p = new ParticleParameters(getRandPosition(), getRandPosition(), getRandPosition(), 50);
+			Vector3d position = new Vector3d(getRandPosition(), getRandPosition(), 0);
+			Vector3d velocity = midiServer.getParticleParams().getWind().clone();
+			int ttl = midiServer.getParticleParams().getTTL();
+			Particle particle = new Particle(position, velocity, color, ttl);
+			//Particle cubeParticle = new Particle(color, );
+			this.particleList.add(particle);
 		}
 	
-		for (Particle cubeParticle : particleList) {
-			this.particleGroup.getChildren().addAll(cubeParticle.getBox());
-		}
+		particleList.forEach(particle -> {
+			particleGroup.getChildren().addAll(particle.getBox());
+		});
 		this.world.getChildren().addAll(this.particleGroup);
 	}
 
@@ -83,21 +87,21 @@ public class DisplayNode {
 		int imageHeight = (int) screenshot.getHeight();
 		PixelReader pr = screenshot.getPixelReader();
 		
-		this.particleList.forEach((particleCube) -> {
-			if (particleCube.isDead()) {
+		this.particleList.forEach((particle) -> {
+			if (particle.isDead()) {
 				int x = (int) (imageWidth * Math.random());
 				int y = (int) (imageHeight * Math.random());
 				Color color = pr.getColor(x, y);
-				
 				int xPosition = -x + (imageWidth / 2);
 				int yPosition = -y + (imageHeight / 2);
-				
-				ParticleParameters newParams = new ParticleParameters(xPosition, yPosition, 0, midiServer.getParticleParams().ttl);
-				particleCube.setColor(color);
-				particleCube.reset(newParams);
+				Vector3d position = new Vector3d(xPosition, yPosition, 0);
+				Vector3d wind = midiServer.getParticleParams().getWind();
+				int ttlMultiplier = midiServer.getParticleParams().getTTL();
+				int ttl = (int) (ttlMultiplier * Math.random());
+				particle.reset(position, wind, color, ttl);
 			}
 			else {
-				particleCube.update(midiServer.getParticleParams());
+				particle.update(midiServer.getParticleParams().getWind());
 			}
 		});
 	}

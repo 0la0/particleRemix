@@ -12,7 +12,7 @@ import javax.sound.midi.ShortMessage;
 public class MidiServer {
 	
 	private MidiDevice midiDevice;
-	private ParticleParameters particleParams = new ParticleParameters(0, 0, 0, 50);
+	private ParticleParameters particleParams = new ParticleParameters(1, 1, 1, 50);
 	
 	public MidiServer () {
 		MidiDeviceFactory.refreshDevices();
@@ -61,16 +61,16 @@ public class MidiServer {
 			if (!messageIsTargeted(sm)) return;
 			
 			if (sm.getData1() == 37) {
-				particleParams.x = getNormalizedMidiValue(sm.getData2());
+				particleParams.getWind().x = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 38) {
-				particleParams.y = getNormalizedMidiValue(sm.getData2());
+				particleParams.getWind().y = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 39) {
-				particleParams.z = getNormalizedMidiValue(sm.getData2());
+				particleParams.getWind().z = getNormalizedMidiValue(sm.getData2());
 			}
 			else if (sm.getData1() == 40) {
-				particleParams.ttl = sm.getData2();
+				particleParams.setTTL(sm.getData2());
 			}
 		}
 		
