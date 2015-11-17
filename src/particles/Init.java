@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
-public class InitFx extends Application {
+public class Init extends Application {
 	
 	private TransparentFrame transparentFrame;
     private long lastTime;
