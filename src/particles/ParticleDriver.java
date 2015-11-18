@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Point3D;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -19,8 +20,8 @@ public class ParticleDriver {
 		//---populate particle list with particles---//
 		for (int i = 0; i < NUM_PARTICLES; i++) {
 			Color color = Color.color(Math.random(), Math.random(), Math.random());
-			Vector3d position = new Vector3d(getRandPosition(), getRandPosition(), 0);
-			Vector3d velocity = midiServer.getCurrentVelocity();
+			Point3D position = new Point3D(getRandPosition(), getRandPosition(), 0);
+			Point3D velocity = midiServer.getCurrentVelocity();
 			int ttl = midiServer.getTtlUpperBound();
 			Particle particle = new Particle(position, velocity, color, ttl);
 			this.particleList.add(particle);
@@ -46,8 +47,8 @@ public class ParticleDriver {
 				Color color = pr.getColor(x, y);
 				int xPosition = -x + (imageWidth / 2);
 				int yPosition = -y + (imageHeight / 2);
-				Vector3d position = new Vector3d(xPosition, yPosition, 0);
-				Vector3d velocity = createNewVelocity(midiServer.getCurrentVelocity());
+				Point3D position = new Point3D(xPosition, yPosition, 0);
+				Point3D velocity = createNewVelocity(midiServer.getCurrentVelocity());
 				int ttlMultiplier = midiServer.getTtlUpperBound();
 				int ttl = (int) (ttlMultiplier * Math.random());
 				particle.reset(position, velocity, color, ttl);
@@ -62,12 +63,12 @@ public class ParticleDriver {
 		return this.particleList;
 	}
 	
-	private Vector3d createNewVelocity (Vector3d currentWind) {
+	private Point3D createNewVelocity (Point3D currentWind) {
 		double vectorMultiplier = 0.5;
 		double x = vectorMultiplier * this.getPosNeg() * Math.random();
 		double y = vectorMultiplier * this.getPosNeg() * Math.random();
 		double z = vectorMultiplier * this.getPosNeg() * Math.random();
-		return new Vector3d(x, y, z);
+		return new Point3D(x, y, z);
 	}
 	
 	private int getRandPosition () {

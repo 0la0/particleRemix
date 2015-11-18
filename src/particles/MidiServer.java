@@ -2,6 +2,8 @@ package particles;
 
 import java.util.Arrays;
 
+import javafx.geometry.Point3D;
+
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
@@ -12,7 +14,7 @@ import javax.sound.midi.ShortMessage;
 public class MidiServer {
 	
 	private MidiDevice midiDevice;
-	private Vector3d currentVelocity = new Vector3d(Math.random(), Math.random(), Math.random());
+	private Point3D currentVelocity = new Point3D(Math.random(), Math.random(), Math.random());
 	private int ttlUpperBound = 20;
 	
 	public MidiServer () {
@@ -33,7 +35,7 @@ public class MidiServer {
 		}
 	}
 	
-	public Vector3d getCurrentVelocity () {
+	public Point3D getCurrentVelocity () {
 		return this.currentVelocity;
 	}
 	
@@ -67,13 +69,22 @@ public class MidiServer {
 			if (!messageIsTargeted(sm)) return;
 			
 			if (sm.getData1() == 37) {
-				currentVelocity.x = getNormalizedMidiValue(sm.getData2());
+				currentVelocity = new Point3D(
+						getNormalizedMidiValue(sm.getData2()),
+						currentVelocity.getY(),
+						currentVelocity.getZ());
 			}
 			else if (sm.getData1() == 38) {
-				currentVelocity.y = getNormalizedMidiValue(sm.getData2());
+				currentVelocity = new Point3D(
+						currentVelocity.getX(),
+						getNormalizedMidiValue(sm.getData2()),
+						currentVelocity.getZ());
 			}
 			else if (sm.getData1() == 39) {
-				currentVelocity.z = getNormalizedMidiValue(sm.getData2());
+				currentVelocity = new Point3D(
+						currentVelocity.getX(),
+						currentVelocity.getY(),
+						getNormalizedMidiValue(sm.getData2()));
 			}
 			else if (sm.getData1() == 40) {
 				ttlUpperBound = sm.getData2() + 2;

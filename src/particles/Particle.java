@@ -1,15 +1,17 @@
 package particles;
 
+import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 
+
 public class Particle {
 
 	private final int PARTICLE_SIZE = 1;
-	private Vector3d position = new Vector3d();
-	private Vector3d velocity = new Vector3d();
+	private Point3D position;
+	private Point3D velocity;
 	
 	private int ttl;
 	
@@ -21,15 +23,15 @@ public class Particle {
 	private Rotate rz = new Rotate(0, Rotate.Z_AXIS);
 	
 	
-	public Particle (Vector3d position, Vector3d velocity, Color color, int ttl) {
+	public Particle (Point3D position, Point3D velocity, Color color, int ttl) {
 		this.box = new Box(PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_SIZE);
 		this.box.getTransforms().addAll(rz, ry, rx);
 		this.reset(position, velocity, color, ttl);
 	}
 	
-	public void reset (Vector3d position, Vector3d velocity, Color color, int ttl) {
-		this.position = position.clone();
-		this.velocity = velocity.clone();
+	public void reset (Point3D position, Point3D velocity, Color color, int ttl) {
+		this.position = position;
+		this.velocity = velocity;
 		this.ttl = ttl;
 		this.setColor(color);
 	}
@@ -38,20 +40,15 @@ public class Particle {
 		return this.box;
 	}
 	
-	public void update (double elapsedTime, Vector3d wind) {
+	public void update (double elapsedTime, Point3D wind) {
 		this.ttl--;
+
+		this.velocity = velocity.add( wind.multiply(elapsedTime) );		
+		this.position = this.position.add(this.velocity);
 		
-		this.velocity.x += wind.x * elapsedTime;
-		this.velocity.y += wind.y * elapsedTime;
-		this.velocity.z += wind.z * elapsedTime;
-				
-		this.position.x += this.velocity.x;
-		this.position.y += this.velocity.y;
-		this.position.z += this.velocity.z;
-		
-		this.box.setTranslateX(this.position.x);
-		this.box.setTranslateY(this.position.y);
-		this.box.setTranslateZ(this.position.z);
+		this.box.setTranslateX(this.position.getX());
+		this.box.setTranslateY(this.position.getY());
+		this.box.setTranslateZ(this.position.getZ());
 	}
 
 	public void setColor (Color color) {
