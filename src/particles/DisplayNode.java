@@ -49,7 +49,7 @@ public class DisplayNode {
 		DraggableFxWorld draggableWorld = new DraggableFxWorld(this.scene, this.root);		
 	}
 
-	public void update (float elapsedTime, BufferedImage screenCapture) {
+	public void update (double elapsedTime, BufferedImage screenCapture) {
 		this.particleDriver.update(elapsedTime, screenCapture);
 	}
 	

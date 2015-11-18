@@ -38,12 +38,12 @@ public class Particle {
 		return this.box;
 	}
 	
-	public void update (Vector3d wind) {
+	public void update (double elapsedTime, Vector3d wind) {
 		this.ttl--;
 		
-		this.velocity.x += wind.x;
-		this.velocity.y += wind.y;
-		this.velocity.z += wind.z;
+		this.velocity.x += wind.x * elapsedTime;
+		this.velocity.y += wind.y * elapsedTime;
+		this.velocity.z += wind.z * elapsedTime;
 				
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;

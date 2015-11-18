@@ -14,6 +14,7 @@ public class Init extends Application {
 	
 	private TransparentFrame transparentFrame;
     private long lastTime;
+    private final double ONE_MILLION = 1000000.0;
 	
 	@Override
 	public void start (Stage primaryStage) {
@@ -29,7 +30,7 @@ public class Init extends Application {
 		this.lastTime = System.nanoTime();
 		AnimationTimer timer = new AnimationTimer() {
 			public void handle(long now) {
-				float elapsedTime = (float) ((now - lastTime) / 1000000.0);
+				double elapsedTime = (now - lastTime) / ONE_MILLION;
 				lastTime = now;
 				displayNode.update(elapsedTime, transparentFrame.getScreenCapture());
 			}

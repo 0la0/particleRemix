@@ -27,10 +27,12 @@ public class ParticleDriver {
 		}
 	}
 	
-	public void update (float elapsedTime, BufferedImage screenCapture) {
+	public void update (double elapsedTime, BufferedImage screenCapture) {
 		if (screenCapture == null) {
 			return;
 		}
+		double particleMultipler = elapsedTime / 100.0;
+		
 		screenshot = SwingFXUtils.toFXImage(screenCapture, null);
 	
 		int imageWidth = (int) screenshot.getWidth();
@@ -51,7 +53,7 @@ public class ParticleDriver {
 				particle.reset(position, velocity, color, ttl);
 			}
 			else {
-				particle.update(midiServer.getCurrentVelocity());
+				particle.update(particleMultipler, midiServer.getCurrentVelocity());
 			}
 		});
 	}
