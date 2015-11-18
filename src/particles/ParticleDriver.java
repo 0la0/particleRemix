@@ -54,7 +54,11 @@ public class ParticleDriver {
 				particle.reset(position, velocity, color, ttl);
 			}
 			else {
-				particle.update(particleMultipler, midiServer.getCurrentVelocity());
+				particle.update(
+						particleMultipler, 
+						midiServer.getCurrentVelocity(), 
+						midiServer.getCurrentScale(),
+						midiServer.getCurrentRotation());
 			}
 		});
 	}

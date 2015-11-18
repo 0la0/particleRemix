@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
 
 
 public class Particle {
@@ -18,14 +19,18 @@ public class Particle {
 	private PhongMaterial material;
 	private Box box;
 	private Color difuseColor = null;
+	
 	private Rotate rx = new Rotate(0, Rotate.X_AXIS);
 	private Rotate ry = new Rotate(0, Rotate.Y_AXIS);
 	private Rotate rz = new Rotate(0, Rotate.Z_AXIS);
+	private Scale sx = new Scale();
+	private Scale sy = new Scale();
+	private Scale sz = new Scale();
 	
 	
 	public Particle (Point3D position, Point3D velocity, Color color, int ttl) {
 		this.box = new Box(PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_SIZE);
-		this.box.getTransforms().addAll(rz, ry, rx);
+		this.box.getTransforms().addAll(rz, ry, rx, sx, sy, sz);
 		this.reset(position, velocity, color, ttl);
 	}
 	
@@ -40,15 +45,15 @@ public class Particle {
 		return this.box;
 	}
 	
-	public void update (double elapsedTime, Point3D wind) {
+	public void update (double elapsedTime, Point3D wind, Point3D scale, Point3D rotation) {
 		this.ttl--;
 
 		this.velocity = velocity.add( wind.multiply(elapsedTime) );		
 		this.position = this.position.add(this.velocity);
 		
-		this.box.setTranslateX(this.position.getX());
-		this.box.setTranslateY(this.position.getY());
-		this.box.setTranslateZ(this.position.getZ());
+		this.setTranslate(this.position);
+		this.setRotate(rotation);
+		this.setScale(scale);
 	}
 
 	public void setColor (Color color) {
@@ -62,10 +67,22 @@ public class Particle {
 		return this.ttl <= 0;
 	}
 	
-	public void setRotate (double x, double y, double z) {
-		this.rx.setAngle(x);
-		this.ry.setAngle(y);
-		this.rz.setAngle(z);
+	private void setTranslate (Point3D translate) {
+		this.box.setTranslateX(translate.getX());
+		this.box.setTranslateY(translate.getY());
+		this.box.setTranslateZ(translate.getZ());
+	}
+	
+	private void setScale (Point3D scale) {
+		this.sx.setX(scale.getX());
+		this.sy.setY(scale.getY());
+		this.sz.setZ(scale.getZ());
+	}
+	
+	private void setRotate (Point3D rotation) {
+		this.rx.setAngle(rotation.getX());
+		this.ry.setAngle(rotation.getY());
+		this.rz.setAngle(rotation.getZ());
 	}
 	
 }
