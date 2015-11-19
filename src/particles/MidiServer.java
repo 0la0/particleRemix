@@ -17,7 +17,7 @@ public class MidiServer {
 	private Point3D currentVelocity = new Point3D(Math.random(), Math.random(), Math.random());
 	private Point3D scale = new Point3D(1, 1, 1);
 	private Point3D rotate = new Point3D(0, 0, 0);
-	private int ttlUpperBound = 20;
+	private double ttlUpperBound = 2500;
 	
 	public MidiServer () {
 		MidiDeviceFactory.refreshDevices();
@@ -49,7 +49,7 @@ public class MidiServer {
 		return this.rotate;
 	}
 	
-	public int getTtlUpperBound () {
+	public double getTtlUpperBound () {
 		return this.ttlUpperBound;
 	}
 	
@@ -104,7 +104,8 @@ public class MidiServer {
 			}
 			//slider 4 => ttl
 			else if (sm.getData1() == 40) {
-				ttlUpperBound = sm.getData2() + 2;
+				double normalValue = sm.getData2() / maxValue;
+				ttlUpperBound = normalValue * 3000 + 1;
 			}
 			//top knob 1 => scale.x
 			else if (sm.getData1() == 42) {

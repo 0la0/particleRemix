@@ -22,7 +22,7 @@ public class ParticleDriver {
 			Color color = Color.color(Math.random(), Math.random(), Math.random());
 			Point3D position = new Point3D(getRandPosition(), getRandPosition(), 0);
 			Point3D velocity = midiServer.getCurrentVelocity();
-			int ttl = midiServer.getTtlUpperBound();
+			double ttl = midiServer.getTtlUpperBound();
 			Particle particle = new Particle(position, velocity, color, ttl);
 			this.particleList.add(particle);
 		}
@@ -32,8 +32,6 @@ public class ParticleDriver {
 		if (screenCapture == null) {
 			return;
 		}
-		double particleMultipler = elapsedTime / 100.0;
-		
 		screenshot = SwingFXUtils.toFXImage(screenCapture, null);
 	
 		int imageWidth = (int) screenshot.getWidth();
@@ -49,13 +47,13 @@ public class ParticleDriver {
 				int yPosition = -y + (imageHeight / 2);
 				Point3D position = new Point3D(xPosition, yPosition, 0);
 				Point3D velocity = createNewVelocity(midiServer.getCurrentVelocity());
-				int ttlMultiplier = midiServer.getTtlUpperBound();
-				int ttl = (int) (ttlMultiplier * Math.random());
+				//int ttlMultiplier = midiServer.getTtlUpperBound();
+				double ttl = midiServer.getTtlUpperBound() * Math.random();
 				particle.reset(position, velocity, color, ttl);
 			}
 			else {
 				particle.update(
-						particleMultipler, 
+						elapsedTime, 
 						midiServer.getCurrentVelocity(), 
 						midiServer.getCurrentScale(),
 						midiServer.getCurrentRotation());

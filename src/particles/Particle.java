@@ -14,7 +14,7 @@ public class Particle {
 	private Point3D position;
 	private Point3D velocity;
 	
-	private int ttl;
+	private double ttl;
 	
 	private PhongMaterial material;
 	private Box box;
@@ -28,13 +28,13 @@ public class Particle {
 	private Scale sz = new Scale();
 	
 	
-	public Particle (Point3D position, Point3D velocity, Color color, int ttl) {
+	public Particle (Point3D position, Point3D velocity, Color color, double ttl) {
 		this.box = new Box(PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_SIZE);
 		this.box.getTransforms().addAll(rz, ry, rx, sx, sy, sz);
 		this.reset(position, velocity, color, ttl);
 	}
 	
-	public void reset (Point3D position, Point3D velocity, Color color, int ttl) {
+	public void reset (Point3D position, Point3D velocity, Color color, double ttl) {
 		this.position = position;
 		this.velocity = velocity;
 		this.ttl = ttl;
@@ -46,9 +46,10 @@ public class Particle {
 	}
 	
 	public void update (double elapsedTime, Point3D wind, Point3D scale, Point3D rotation) {
-		this.ttl--;
+		this.ttl -= elapsedTime;
+		//System.out.println("elapsedTime " + elapsedTime);
 
-		this.velocity = velocity.add( wind.multiply(elapsedTime) );		
+		this.velocity = velocity.add( wind.multiply(elapsedTime / 100.0) );		
 		this.position = this.position.add(this.velocity);
 		
 		this.setTranslate(this.position);
