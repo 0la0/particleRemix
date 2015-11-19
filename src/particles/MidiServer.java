@@ -152,7 +152,7 @@ public class MidiServer {
 		}
 		
 		private double getNormalizedScale (int realValue) {
-			return realValue / scaleMagnitude;
+			return Math.pow(realValue / scaleMagnitude, 2);
 		}
 		
 		private int getNormalizedVelocity (int realValue) {

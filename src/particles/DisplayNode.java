@@ -31,7 +31,8 @@ public class DisplayNode {
 		this.height = height;
 		
 		root.getChildren().add(world);
-		this.scene = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);
+		//this.scene = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);
+		this.scene = new SubScene(root, width, height);
 		this.scene.setFill(Color.BLACK);
 		
 		AmbientLight light = new AmbientLight();
