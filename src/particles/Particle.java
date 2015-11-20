@@ -13,7 +13,6 @@ public class Particle {
 	private final int PARTICLE_SIZE = 1;
 	private Point3D position;
 	private Point3D velocity;
-	
 	private double ttl;
 	
 	private PhongMaterial material;
@@ -27,11 +26,22 @@ public class Particle {
 	private Scale sy = new Scale();
 	private Scale sz = new Scale();
 	
+	private SwarmService swarmService;
+	private ParameterService parameterService;
+	
 	
 	public Particle (Point3D position, Point3D velocity, Color color, double ttl) {
 		this.box = new Box(PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_SIZE);
 		this.box.getTransforms().addAll(rz, ry, rx, sx, sy, sz);
 		this.reset(position, velocity, color, ttl);
+	}
+	
+	public void setSwarmService (SwarmService swarmService) {
+		this.swarmService = swarmService;
+	}
+	
+	public void setParameterService (ParameterService parameterService) {
+		this.parameterService = parameterService;
 	}
 	
 	public void reset (Point3D position, Point3D velocity, Color color, double ttl) {
@@ -48,8 +58,22 @@ public class Particle {
 	public void update (double elapsedTime, Point3D wind, Point3D scale, Point3D rotation) {
 		this.ttl -= elapsedTime;
 		
-		this.velocity = velocity.add( wind.multiply(elapsedTime / 100.0) );		
+		this.velocity = velocity.add( wind.multiply(elapsedTime / 100.0) );
+	
+		if (this.parameterService.getSwarmIsOn()) {
+			this.velocity = this.velocity.add(
+					swarmService.getRuleThreeVector(this));
+		}
+				
 		this.position = this.position.add(this.velocity);
+		
+		if (this.parameterService.getSwarmIsOn()) {
+			this.position = this.position.add(
+					swarmService.getRuleOneVector(this));
+			
+			this.position = this.position.add(
+					swarmService.getRuleTwoVector(this));
+		}
 		
 		this.setTranslate(this.position);
 		this.setRotate(rotation);
@@ -65,6 +89,14 @@ public class Particle {
 	
 	public boolean isDead () {
 		return this.ttl <= 0;
+	}
+	
+	public Point3D getPosition () {
+		return this.position;
+	}
+	
+	public Point3D getVelocity () {
+		return this.velocity;
 	}
 	
 	private void setTranslate (Point3D translate) {

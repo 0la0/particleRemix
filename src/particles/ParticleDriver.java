@@ -11,10 +11,11 @@ import javafx.scene.paint.Color;
 
 public class ParticleDriver {
 
-	private final int NUM_PARTICLES = 10000;
+	private final int NUM_PARTICLES = 1000;
 	private ArrayList<Particle> particleList = new ArrayList<Particle>();
 	private WritableImage screenshot;
 	private ParameterService parameterService;
+	private SwarmService swarmService = new SwarmService();
 	
 	public ParticleDriver (ParameterService parameterService) {
 		this.parameterService = parameterService;
@@ -25,8 +26,11 @@ public class ParticleDriver {
 			Point3D velocity = parameterService.getVelocity();
 			double ttl = parameterService.getTtlUpperBound();
 			Particle particle = new Particle(position, velocity, color, ttl);
+			particle.setSwarmService(swarmService);
+			particle.setParameterService(parameterService);
 			this.particleList.add(particle);
 		}
+		this.swarmService.setParticleList(particleList);
 	}
 	
 	public void update (double elapsedTime, BufferedImage screenCapture) {
@@ -38,6 +42,10 @@ public class ParticleDriver {
 		int imageWidth = (int) screenshot.getWidth();
 		int imageHeight = (int) screenshot.getHeight();
 		PixelReader pr = screenshot.getPixelReader();
+		
+		if (this.parameterService.getSwarmIsOn()) {
+			this.swarmService.update(this.particleList);
+		}
 		
 		this.particleList.forEach((particle) -> {
 			if (particle.isDead()) {

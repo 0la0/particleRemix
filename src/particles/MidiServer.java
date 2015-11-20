@@ -62,7 +62,7 @@ public class MidiServer {
 		}
 		
 		private void runMidiMapping (ShortMessage sm) {
-			if (!messageIsTargeted(sm)) return;
+			//if (!messageIsTargeted(sm)) return;
 			
 			//slider 1 => velocity.x
 			if (sm.getData1() == 37) {
@@ -105,6 +105,10 @@ public class MidiServer {
 			//bottom knob 3 => rotate.z
 			else if (sm.getData1() == 45) {
 				parameterService.setRotateZ(getNormalizedRotate(sm.getData2()));
+			}
+			//top left button => toggle swarm
+			else if (sm.getData1() == 28 && sm.getData2() > 0) {
+				parameterService.setSwarmIsOn(!parameterService.getSwarmIsOn());
 			}
 		}
 		

@@ -73,7 +73,7 @@ public class TransparentFrame {
         
         //Take screenshot of scene area every n milliseconds
         Timeline timeline = new Timeline(new KeyFrame(
-            Duration.millis(200),
+            Duration.millis(100),
             actionEvent -> {
             	int locationX = (int) stage.getX() + 1;
             	int locationY = (int) stage.getY() + 1;
