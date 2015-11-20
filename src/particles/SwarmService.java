@@ -23,13 +23,13 @@ public class SwarmService {
 	
 	public void update (ArrayList<Particle> particleList) {
 		this.meanPosition = particleList.stream()
-				.map(particle -> particle.getPosition()) //try ::
+				.map(Particle::getPosition)
 				.reduce(new Point3D(0, 0, 0),
 						(sum, currentPoint) -> sum.add(currentPoint))
 				.multiply(1 / (particleList.size() * 1.0));
 		
 		this.meanVelocity = particleList.stream()
-				.map(particle -> particle.getVelocity()) //try ::
+				.map(Particle::getVelocity)
 				.reduce(new Point3D(0, 0, 0),
 						(sum, currentPoint) -> sum.add(currentPoint))
 				.multiply(1 / (particleList.size() * 1.0));
