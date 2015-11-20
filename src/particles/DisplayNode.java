@@ -23,12 +23,18 @@ public class DisplayNode {
 	
 	private double width;
 	private double height;
-	private ParticleDriver particleDriver = new ParticleDriver();
+	private ParticleDriver particleDriver;
+	private MidiServer midiServer;
 	
 	
 	public DisplayNode (int width, int height) {
 		this.width = width;
 		this.height = height;
+		
+		ParameterService parameterService = new ParameterService();
+		this.particleDriver = new ParticleDriver(parameterService);
+		this.midiServer = new MidiServer(parameterService);
+		
 		
 		root.getChildren().add(world);
 		//this.scene = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);

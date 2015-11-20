@@ -47,8 +47,7 @@ public class Particle {
 	
 	public void update (double elapsedTime, Point3D wind, Point3D scale, Point3D rotation) {
 		this.ttl -= elapsedTime;
-		//System.out.println("elapsedTime " + elapsedTime);
-
+		
 		this.velocity = velocity.add( wind.multiply(elapsedTime / 100.0) );		
 		this.position = this.position.add(this.velocity);
 		

@@ -14,12 +14,12 @@ import javax.sound.midi.ShortMessage;
 public class MidiServer {
 	
 	private MidiDevice midiDevice;
-	private Point3D currentVelocity = new Point3D(Math.random(), Math.random(), Math.random());
-	private Point3D scale = new Point3D(1, 1, 1);
-	private Point3D rotate = new Point3D(0, 0, 0);
-	private double ttlUpperBound = 2500;
+	private ParameterService parameterService;
 	
-	public MidiServer () {
+	
+	public MidiServer (ParameterService parameterService) {
+		this.parameterService = parameterService;
+		
 		MidiDeviceFactory.refreshDevices();
 		
 		String[] receivers = MidiDeviceFactory.getReceivers();
@@ -36,23 +36,6 @@ public class MidiServer {
 			e.printStackTrace();
 		}
 	}
-	
-	public Point3D getCurrentVelocity () {
-		return this.currentVelocity;
-	}
-	
-	public Point3D getCurrentScale () {
-		return this.scale;
-	}
-	
-	public Point3D getCurrentRotation () {
-		return this.rotate;
-	}
-	
-	public double getTtlUpperBound () {
-		return this.ttlUpperBound;
-	}
-	
 	
 	private class MidiInReceiver implements Receiver {
 		
@@ -83,71 +66,45 @@ public class MidiServer {
 			
 			//slider 1 => velocity.x
 			if (sm.getData1() == 37) {
-				currentVelocity = new Point3D(
-						getNormalizedVelocity(sm.getData2()),
-						currentVelocity.getY(),
-						currentVelocity.getZ());
+				parameterService.setVelocityX(getNormalizedVelocity(sm.getData2()));
 			}
 			//slider 2 => velocity.y
 			else if (sm.getData1() == 38) {
-				currentVelocity = new Point3D(
-						currentVelocity.getX(),
-						getNormalizedVelocity(sm.getData2()),
-						currentVelocity.getZ());
+				parameterService.setVelocityY(getNormalizedVelocity(sm.getData2()));
 			}
 			//slider 3 => velocity.z
 			else if (sm.getData1() == 39) {
-				currentVelocity = new Point3D(
-						currentVelocity.getX(),
-						currentVelocity.getY(),
-						getNormalizedVelocity(sm.getData2()));
+				parameterService.setVelocityZ(getNormalizedVelocity(sm.getData2()));
 			}
 			//slider 4 => ttl
 			else if (sm.getData1() == 40) {
 				double normalValue = sm.getData2() / maxValue;
-				ttlUpperBound = normalValue * 3000 + 1;
+				double ttlUpperBound = normalValue * 3000 + 1;
+				parameterService.setTtlUpperBound(ttlUpperBound);
 			}
 			//top knob 1 => scale.x
 			else if (sm.getData1() == 42) {
-				scale = new Point3D(
-						getNormalizedScale(sm.getData2()),
-						scale.getY(),
-						scale.getZ());
+				parameterService.setScaleX(getNormalizedScale(sm.getData2()));
 			}
 			//top knob 2 => scale.y
 			else if (sm.getData1() == 44) {
-				scale = new Point3D(
-						scale.getX(),
-						getNormalizedScale(sm.getData2()),
-						scale.getZ());
+				parameterService.setScaleY(getNormalizedScale(sm.getData2()));
 			}
 			//top knob 3 => scale.z
 			else if (sm.getData1() == 46) {
-				scale = new Point3D(
-						scale.getX(),
-						scale.getY(),
-						getNormalizedScale(sm.getData2()));
+				parameterService.setScaleZ(getNormalizedScale(sm.getData2()));
 			}
 			//bottom knob 1 => rotate.x
 			else if (sm.getData1() == 41) {
-				rotate = new Point3D(
-						getNormalizedRotate(sm.getData2()),
-						rotate.getY(),
-						rotate.getZ());
+				parameterService.setRotateX(getNormalizedRotate(sm.getData2()));
 			}
 			//bottom knob 2 => rotate.y
 			else if (sm.getData1() == 43) {
-				rotate = new Point3D(
-						rotate.getX(),
-						getNormalizedRotate(sm.getData2()),
-						rotate.getZ());
+				parameterService.setRotateY(getNormalizedRotate(sm.getData2()));
 			}
 			//bottom knob 3 => rotate.z
 			else if (sm.getData1() == 45) {
-				rotate = new Point3D(
-						rotate.getX(),
-						rotate.getY(),
-						getNormalizedRotate(sm.getData2()));
+				parameterService.setRotateZ(getNormalizedRotate(sm.getData2()));
 			}
 		}
 		

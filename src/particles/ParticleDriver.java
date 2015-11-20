@@ -13,16 +13,17 @@ public class ParticleDriver {
 
 	private final int NUM_PARTICLES = 10000;
 	private ArrayList<Particle> particleList = new ArrayList<Particle>();
-	private MidiServer midiServer = new MidiServer();
 	private WritableImage screenshot;
+	private ParameterService parameterService;
 	
-	public ParticleDriver () {
+	public ParticleDriver (ParameterService parameterService) {
+		this.parameterService = parameterService;
 		//---populate particle list with particles---//
 		for (int i = 0; i < NUM_PARTICLES; i++) {
 			Color color = Color.color(Math.random(), Math.random(), Math.random());
 			Point3D position = new Point3D(getRandPosition(), getRandPosition(), 0);
-			Point3D velocity = midiServer.getCurrentVelocity();
-			double ttl = midiServer.getTtlUpperBound();
+			Point3D velocity = parameterService.getVelocity();
+			double ttl = parameterService.getTtlUpperBound();
 			Particle particle = new Particle(position, velocity, color, ttl);
 			this.particleList.add(particle);
 		}
@@ -46,17 +47,16 @@ public class ParticleDriver {
 				int xPosition = -x + (imageWidth / 2);
 				int yPosition = -y + (imageHeight / 2);
 				Point3D position = new Point3D(xPosition, yPosition, 0);
-				Point3D velocity = createNewVelocity(midiServer.getCurrentVelocity());
-				//int ttlMultiplier = midiServer.getTtlUpperBound();
-				double ttl = midiServer.getTtlUpperBound() * Math.random();
+				Point3D velocity = createNewVelocity(parameterService.getVelocity());
+				double ttl = parameterService.getTtlUpperBound() * Math.random();
 				particle.reset(position, velocity, color, ttl);
 			}
 			else {
 				particle.update(
 						elapsedTime, 
-						midiServer.getCurrentVelocity(), 
-						midiServer.getCurrentScale(),
-						midiServer.getCurrentRotation());
+						parameterService.getVelocity(), 
+						parameterService.getScale(),
+						parameterService.getRotate());
 			}
 		});
 	}
