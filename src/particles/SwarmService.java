@@ -13,15 +13,24 @@ public class SwarmService {
 	private Point3D meanPosition = new Point3D(0, 0, 0);
 	private Point3D meanVelocity = new Point3D(0, 0, 0);
 	private ArrayList<Particle> particleList;
+	private Point3D goalState = new Point3D(0, 0, 0);
+	private final int GOAL_DISTANCE = 250;
+	private double totalTime = 0;
 
 	public SwarmService () {}
-	
+
 	
 	public void setParticleList (ArrayList<Particle> particleList) {
 		this.particleList = particleList;
 	}
 	
-	public void update (ArrayList<Particle> particleList) {
+	public void update (double elapsedTime, ArrayList<Particle> particleList) {
+		this.totalTime += elapsedTime / 1000.0;
+		double x = GOAL_DISTANCE * Math.sin(totalTime);
+		double y = GOAL_DISTANCE * Math.sin(totalTime);
+		double z = GOAL_DISTANCE * Math.cos(totalTime);
+		this.goalState = new Point3D(x, y, z);
+		
 		this.meanPosition = particleList.stream()
 				.map(Particle::getPosition)
 				.reduce(new Point3D(0, 0, 0),
@@ -39,7 +48,7 @@ public class SwarmService {
 	public Point3D getRuleOneVector (Particle particle) {
 		return this.meanPosition
 				.subtract(particle.getPosition())
-				.multiply(0.05);
+				.multiply(0.001);
 	}
 	
 	//Boids mind their neighbor's personal space
@@ -51,7 +60,7 @@ public class SwarmService {
 				.map(Particle::getPosition)
 				.reduce(new Point3D(0, 0, 0), 
 						(sum, currentPoint) -> sum.subtract(currentPoint.subtract(particle.getPosition())))
-				.multiply(2);
+				.multiply(0.01);
 		return distance;
 	}
 	
@@ -59,7 +68,13 @@ public class SwarmService {
 	public Point3D getRuleThreeVector (Particle particle) {
 		return this.meanVelocity
 				.subtract(particle.getVelocity())
-				.multiply(0.05);
+				.multiply(0.2);
+	}
+	
+	public Point3D moveTowardGoalState (Particle particle) {
+		return this.goalState
+				.subtract(particle.getPosition())
+				.multiply(0.001);
 	}
 	
 }

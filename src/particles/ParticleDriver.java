@@ -43,9 +43,7 @@ public class ParticleDriver {
 		int imageHeight = (int) screenshot.getHeight();
 		PixelReader pr = screenshot.getPixelReader();
 		
-		if (this.parameterService.getSwarmIsOn()) {
-			this.swarmService.update(this.particleList);
-		}
+		this.swarmService.update(elapsedTime, this.particleList);
 		
 		this.particleList.forEach((particle) -> {
 			if (particle.isDead()) {

@@ -61,19 +61,15 @@ public class Particle {
 		this.velocity = velocity.add( wind.multiply(elapsedTime / 100.0) );
 	
 		if (this.parameterService.getSwarmIsOn()) {
-			this.velocity = this.velocity.add(
-					swarmService.getRuleThreeVector(this));
+			this.velocity = this.velocity
+					.add(swarmService.moveTowardGoalState(this));
+					//.add(swarmService.getRuleOneVector(this))
+					//.add(swarmService.getRuleTwoVector(this))
+					//.add(swarmService.getRuleThreeVector(this))
 		}
 				
 		this.position = this.position.add(this.velocity);
 		
-		if (this.parameterService.getSwarmIsOn()) {
-			this.position = this.position.add(
-					swarmService.getRuleOneVector(this));
-			
-			this.position = this.position.add(
-					swarmService.getRuleTwoVector(this));
-		}
 		
 		this.setTranslate(this.position);
 		this.setRotate(rotation);
