@@ -74,10 +74,9 @@ public class ParticleDriver {
 	}
 	
 	private Point3D createNewVelocity (Point3D currentWind) {
-		double vectorMultiplier = 0.5;
-		double x = vectorMultiplier * this.getPosNeg() * Math.random();
-		double y = vectorMultiplier * this.getPosNeg() * Math.random();
-		double z = vectorMultiplier * this.getPosNeg() * Math.random();
+		double x = this.parameterService.getInitialVelocity() * this.getPosNeg() * Math.random();
+		double y = this.parameterService.getInitialVelocity() * this.getPosNeg() * Math.random();
+		double z = this.parameterService.getInitialVelocity() * this.getPosNeg() * Math.random();
 		return new Point3D(x, y, z);
 	}
 	

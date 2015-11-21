@@ -94,7 +94,11 @@ public class MidiServer {
 			else if (sm.getData1() == 46) {
 				parameterService.setScaleZ(getNormalizedScale(sm.getData2()));
 			}
-			//bottom knob 1 => rotate.x
+			//top knob 4 => initial velocity
+			else if (sm.getData1() == 48) {
+				parameterService.setInitialVelocity(sm.getData2() / 32.0);
+			}
+ 			//bottom knob 1 => rotate.x
 			else if (sm.getData1() == 41) {
 				parameterService.setRotateX(getNormalizedRotate(sm.getData2()));
 			}

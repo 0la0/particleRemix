@@ -4,11 +4,12 @@ import javafx.geometry.Point3D;
 
 public class ParameterService {
 	
-	private Point3D velocity = new Point3D(Math.random(), Math.random(), Math.random());
+	private Point3D velocity = new Point3D(0, 0, 0);
 	private Point3D scale = new Point3D(1, 1, 1);
 	private Point3D rotate = new Point3D(0, 0, 0);
 	private double ttlUpperBound = 2500;
 	private boolean swarmIsOn = false;
+	private double initialVelocity = Math.random();
 
 	public ParameterService () {}
 
@@ -86,6 +87,14 @@ public class ParameterService {
 
 	public void setSwarmIsOn(boolean swarmIsOn) {
 		this.swarmIsOn = swarmIsOn;
+	}
+	
+	public double getInitialVelocity () {
+		return initialVelocity;
+	}
+
+	public void setInitialVelocity (double initialVelocity) {
+		this.initialVelocity = initialVelocity;
 	}
 	
 	
