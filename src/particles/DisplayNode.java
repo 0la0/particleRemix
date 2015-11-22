@@ -25,6 +25,7 @@ public class DisplayNode {
 	private double height;
 	private ParticleDriver particleDriver;
 	private MidiServer midiServer;
+	private CameraPositionService camerPosition;
 	
 	
 	public DisplayNode (int width, int height) {
@@ -34,6 +35,7 @@ public class DisplayNode {
 		ParameterService parameterService = new ParameterService();
 		this.particleDriver = new ParticleDriver(parameterService);
 		this.midiServer = new MidiServer(parameterService);
+		this.camerPosition = new CameraPositionService(parameterService);
 		
 		
 		root.getChildren().add(world);
@@ -53,11 +55,12 @@ public class DisplayNode {
 		this.world.getChildren().addAll(this.particleGroup);
 	    
 		//DraggableFxWorld creates a 3D draggable world given a scene
-		DraggableFxWorld draggableWorld = new DraggableFxWorld(this.scene, this.root);		
+		DraggableFxWorld draggableWorld = new DraggableFxWorld(this.scene, this.root, this.camerPosition.getCameraXform());		
 	}
 
 	public void update (double elapsedTime, BufferedImage screenCapture) {
 		this.particleDriver.update(elapsedTime, screenCapture);
+		this.camerPosition.update(elapsedTime);
 	}
 	
 	public Node getUiNode () {

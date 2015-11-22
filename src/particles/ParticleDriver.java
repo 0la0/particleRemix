@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 public class ParticleDriver {
 
-	private final int NUM_PARTICLES = 1000;
+	private final int NUM_PARTICLES = 5000;
 	private ArrayList<Particle> particleList = new ArrayList<Particle>();
 	private WritableImage screenshot;
 	private ParameterService parameterService;

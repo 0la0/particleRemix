@@ -118,6 +118,10 @@ public class MidiServer {
 			else if (sm.getData1() == 28 && sm.getData2() > 0) {
 				parameterService.setSwarmIsOn(!parameterService.getSwarmIsOn());
 			}
+			//bottom right button => camera routine
+			else if (sm.getData1() == 19 && sm.getData2() > 0) {
+				parameterService.setCameraIsInRoutine(true);
+			}
 		}
 		
 		private double getNormalizedScale (int realValue) {

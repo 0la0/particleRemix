@@ -9,7 +9,7 @@ public class DraggableFxWorld {
 	
 	private PerspectiveCamera camera = new PerspectiveCamera(true);
 	
-	private Xform cameraXform = new Xform();
+	private Xform cameraXform;
 	private Xform cameraXform2 = new Xform();
 	private Xform cameraXform3 = new Xform();
 	private double cameraDistance = 1000;
@@ -22,7 +22,8 @@ public class DraggableFxWorld {
 	private double mouseDeltaY;
 	
 	
-	public DraggableFxWorld (SubScene scene, Group root) {
+	public DraggableFxWorld (SubScene scene, Group root, Xform cameraXform) {
+		this.cameraXform = cameraXform;
 		this.buildCamera(root);
 		this.handleMouse(scene);
 		scene.setCamera(camera);

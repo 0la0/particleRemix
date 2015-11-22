@@ -11,6 +11,7 @@ public class ParameterService {
 	private boolean swarmIsOn = false;
 	private double initialVelocity = Math.random();
 	private double goalAttraction = 0.0001;
+	private boolean cameraIsInRoutine = false;
 
 	public ParameterService () {}
 
@@ -104,5 +105,13 @@ public class ParameterService {
 	
 	public void setGoalAttraction (double goalAttraction) {
 		this.goalAttraction = goalAttraction;
+	}
+	
+	public boolean cameraIsInRoutine () {
+		return this.cameraIsInRoutine;
+	}
+
+	public void setCameraIsInRoutine (boolean cameraIsInRoutine) {
+		this.cameraIsInRoutine = cameraIsInRoutine;
 	}
 }
