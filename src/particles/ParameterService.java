@@ -10,6 +10,7 @@ public class ParameterService {
 	private double ttlUpperBound = 2500;
 	private boolean swarmIsOn = false;
 	private double initialVelocity = Math.random();
+	private double goalAttraction = 0.0001;
 
 	public ParameterService () {}
 
@@ -97,5 +98,11 @@ public class ParameterService {
 		this.initialVelocity = initialVelocity;
 	}
 	
+	public double getGoalAttraction () {
+		return this.goalAttraction;
+	}
 	
+	public void setGoalAttraction (double goalAttraction) {
+		this.goalAttraction = goalAttraction;
+	}
 }

@@ -10,15 +10,17 @@ import javafx.geometry.Point3D;
  */
 public class SwarmService {
 	
+	private ParameterService parameterService;
 	private Point3D meanPosition = new Point3D(0, 0, 0);
 	private Point3D meanVelocity = new Point3D(0, 0, 0);
 	private ArrayList<Particle> particleList;
 	private Point3D goalState = new Point3D(0, 0, 0);
-	private final int GOAL_DISTANCE = 250;
+	private final int GOAL_DISTANCE = 200;
 	private double totalTime = 0;
 
-	public SwarmService () {}
-
+	public SwarmService (ParameterService parameterService) {
+		this.parameterService = parameterService;
+	}
 	
 	public void setParticleList (ArrayList<Particle> particleList) {
 		this.particleList = particleList;
@@ -26,9 +28,9 @@ public class SwarmService {
 	
 	public void update (double elapsedTime, ArrayList<Particle> particleList) {
 		this.totalTime += elapsedTime / 1000.0;
-		double x = GOAL_DISTANCE * Math.sin(totalTime);
-		double y = GOAL_DISTANCE * Math.sin(totalTime);
-		double z = GOAL_DISTANCE * Math.cos(totalTime);
+		double x = GOAL_DISTANCE * Math.sin(totalTime / 2.0);
+		double y = GOAL_DISTANCE * Math.sin(totalTime / 3.0);
+		double z = GOAL_DISTANCE * Math.cos(totalTime / 4.0);
 		this.goalState = new Point3D(x, y, z);
 		
 		this.meanPosition = particleList.stream()
@@ -68,13 +70,13 @@ public class SwarmService {
 	public Point3D getRuleThreeVector (Particle particle) {
 		return this.meanVelocity
 				.subtract(particle.getVelocity())
-				.multiply(0.2);
+				.multiply(0.001);
 	}
 	
 	public Point3D moveTowardGoalState (Particle particle) {
 		return this.goalState
 				.subtract(particle.getPosition())
-				.multiply(0.001);
+				.multiply(parameterService.getGoalAttraction());
 	}
 	
 }

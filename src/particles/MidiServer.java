@@ -39,7 +39,7 @@ public class MidiServer {
 	
 	private class MidiInReceiver implements Receiver {
 		
-		private int velocityMagnitude = 32;
+		private double velocityMagnitude = 64.0;
 		private double scaleMagnitude = 6.0;
 		private int base = 64;
 		private double maxValue = 127.0;
@@ -110,6 +110,10 @@ public class MidiServer {
 			else if (sm.getData1() == 45) {
 				parameterService.setRotateZ(getNormalizedRotate(sm.getData2()));
 			}
+			//bottom knob 4 => goalAttraction
+			else if (sm.getData1() == 49) {
+				parameterService.setGoalAttraction(sm.getData2() * 0.00001);
+			}
 			//top left button => toggle swarm
 			else if (sm.getData1() == 28 && sm.getData2() > 0) {
 				parameterService.setSwarmIsOn(!parameterService.getSwarmIsOn());
@@ -120,7 +124,7 @@ public class MidiServer {
 			return Math.pow(realValue / scaleMagnitude, 2);
 		}
 		
-		private int getNormalizedVelocity (int realValue) {
+		private double getNormalizedVelocity (int realValue) {
 			return (realValue - base) / velocityMagnitude;
 		}
 		

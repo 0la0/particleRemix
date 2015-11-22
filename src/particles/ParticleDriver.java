@@ -15,10 +15,12 @@ public class ParticleDriver {
 	private ArrayList<Particle> particleList = new ArrayList<Particle>();
 	private WritableImage screenshot;
 	private ParameterService parameterService;
-	private SwarmService swarmService = new SwarmService();
+	private SwarmService swarmService;
 	
 	public ParticleDriver (ParameterService parameterService) {
 		this.parameterService = parameterService;
+		this.swarmService = new SwarmService(parameterService);
+		
 		//---populate particle list with particles---//
 		for (int i = 0; i < NUM_PARTICLES; i++) {
 			Color color = Color.color(Math.random(), Math.random(), Math.random());
