@@ -3,10 +3,13 @@ package particles;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
@@ -15,6 +18,7 @@ public class Init extends Application {
 	private TransparentFrame transparentFrame;
     private long lastTime;
     private final double ONE_MILLION = 1000000.0;
+    private boolean isFullscreen = false;
 	
 	@Override
 	public void start (Stage primaryStage) {
@@ -39,11 +43,26 @@ public class Init extends Application {
 		BorderPane pane = new BorderPane();
 		pane.setCenter(displayNode.getUiNode());
         scene.setRoot(pane);
+        displayNode.bindSceneToParent(pane);
 		primaryStage.setScene(scene);
         primaryStage.show();
         
         transparentFrame = new TransparentFrame();
         timer.start();
+        
+        
+        scene.setOnKeyPressed((KeyEvent e) -> {
+			if (e.getCode() == KeyCode.SPACE || e.getCode() == KeyCode.ESCAPE) {
+				isFullscreen = !isFullscreen;
+				primaryStage.setFullScreen(isFullscreen);
+			}
+		});
+        
+        primaryStage.setOnCloseRequest((WindowEvent e) -> {
+        	Platform.exit();
+        	System.exit(0);
+        });
+
 	}
 	
 

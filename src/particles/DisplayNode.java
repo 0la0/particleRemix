@@ -8,10 +8,8 @@ import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import javafx.scene.SceneAntialiasing;
+import javafx.scene.layout.Pane;
 
 
 public class DisplayNode {
@@ -55,7 +53,7 @@ public class DisplayNode {
 		this.world.getChildren().addAll(this.particleGroup);
 	    
 		//DraggableFxWorld creates a 3D draggable world given a scene
-		DraggableFxWorld draggableWorld = new DraggableFxWorld(this.scene, this.root, this.camerPosition.getCameraXform());		
+		DraggableFxWorld draggableWorld = new DraggableFxWorld(this.scene, this.root, this.camerPosition.getCameraXform());
 	}
 
 	public void update (double elapsedTime, BufferedImage screenCapture) {
@@ -65,6 +63,12 @@ public class DisplayNode {
 	
 	public Node getUiNode () {
 		return this.scene;
+	}
+	
+	//bind to parent for resizing
+	public void bindSceneToParent (Pane parentPane) {
+		this.scene.heightProperty().bind(parentPane.heightProperty());
+		this.scene.widthProperty().bind(parentPane.widthProperty());
 	}
 	
 	public void setFullscreen (boolean isFullscreen, double w, double h) {
