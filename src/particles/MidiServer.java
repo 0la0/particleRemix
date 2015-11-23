@@ -132,6 +132,10 @@ public class MidiServer {
 			else if (sm.getData1() == 19 && sm.getData2() > 0) {
 				parameterService.setCameraIsInRoutine(true);
 			}
+			//bottom left button => motion detection
+			else if (sm.getData1() == 16 && sm.getData2() > 0) {
+				parameterService.setMotionDetection(!parameterService.isMotionDetection());
+			}
 		}
 		
 		private double getNormalizedScale (int realValue) {

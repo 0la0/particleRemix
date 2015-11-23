@@ -1,10 +1,10 @@
 package particles;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
+import javafx.scene.image.WritableImage;
 
 public class ParticleDriver {
 
@@ -31,8 +31,8 @@ public class ParticleDriver {
 		this.swarmService.setParticleList(particleList);
 	}
 	
-	public void update (double elapsedTime, BufferedImage screenCapture) {
-		if (screenCapture == null) {
+	public void update (double elapsedTime, WritableImage screenshot) {
+		if (screenshot == null) {
 			return;
 		}
 		
@@ -40,12 +40,22 @@ public class ParticleDriver {
 		
 		this.particleList.forEach((particle) -> {
 			if (particle.isDead()) {
-				RenderPoint renderPoint = new RenderPoint(screenCapture, parameterService);
-				particle.reset(
-						renderPoint.getRenderPosition(), 
-						renderPoint.createNewVelocity(),
-						renderPoint.getColor(),
-						renderPoint.getTTL());
+				RenderPoint renderPoint = new RenderPoint(screenshot, parameterService);
+				
+				if (renderPoint.getNothingToRender()) {
+					particle.reset(
+							new Point3D(2000, 2000, 2000),
+							new Point3D(0, 0, 0),
+							Color.BLACK, 500);
+				}
+				else {
+					particle.reset(
+							renderPoint.getRenderPosition(), 
+							renderPoint.createNewVelocity(),
+							renderPoint.getColor(),
+							renderPoint.getTTL());
+				}
+				
 			}
 			else {
 				particle.update(

@@ -1,8 +1,6 @@
 package particles;
 
-import java.awt.image.BufferedImage;
-
-import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -13,14 +11,23 @@ class RenderPoint {
 	private int samplePointY;
 	private Point3D renderPosition;
 	private Color color;
-	ParameterService parameterService;
+	private ParameterService parameterService;
+	private boolean nothingToRender = false;
 	
-	public RenderPoint (BufferedImage screenCapture, ParameterService parameterService) {
+	public RenderPoint (WritableImage screenshot, ParameterService parameterService) {
 		this.parameterService = parameterService;
-		WritableImage screenshot = SwingFXUtils.toFXImage(screenCapture, null);	
 		
 		if (this.parameterService.isMotionDetection()) {
-			//get sample point from lookup
+			if (this.parameterService.getMotionPointList().size() > 0) {
+				//get sample point from lookup
+				int randIndex = (int) (this.parameterService.getMotionPointList().size() * Math.random());
+				Point2D samplePoint = this.parameterService.getMotionPointList().get(randIndex);
+				this.samplePointX = (int) samplePoint.getX();
+				this.samplePointY = (int) samplePoint.getY();
+			}
+			else {
+				this.nothingToRender = true;
+			}
 		}
 		else {
 			int imageWidth = (int) screenshot.getWidth();
@@ -55,6 +62,10 @@ class RenderPoint {
 	
 	public double getTTL () {
 		return this.parameterService.getTtlUpperBound() * Math.random();
+	}
+	
+	public boolean getNothingToRender () {
+		return this.nothingToRender;
 	}
 	
 	private int getPosNeg () {

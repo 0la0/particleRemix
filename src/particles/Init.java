@@ -19,6 +19,7 @@ public class Init extends Application {
     private long lastTime;
     private final double ONE_MILLION = 1000000.0;
     private boolean isFullscreen = false;
+    private ParameterService parameterService = new ParameterService();
 	
 	@Override
 	public void start (Stage primaryStage) {
@@ -28,7 +29,7 @@ public class Init extends Application {
 		Group root = new Group();
         Scene scene = new Scene(root, displayWidth, displayHeight, Color.LIGHTGREEN);
         
-        DisplayNode displayNode = new DisplayNode(displayWidth, displayHeight);
+        DisplayNode displayNode = new DisplayNode(displayWidth, displayHeight, parameterService);
         
         //---CREATE TIMER AND START---//
 		this.lastTime = System.nanoTime();
@@ -36,7 +37,7 @@ public class Init extends Application {
 			public void handle(long now) {
 				double elapsedTime = (now - lastTime) / ONE_MILLION;
 				lastTime = now;
-				displayNode.update(elapsedTime, transparentFrame.getScreenCapture());
+				displayNode.update(elapsedTime, transparentFrame.getScreenshot());
 			}
 		};
         
@@ -47,7 +48,7 @@ public class Init extends Application {
 		primaryStage.setScene(scene);
         primaryStage.show();
         
-        transparentFrame = new TransparentFrame();
+        transparentFrame = new TransparentFrame(parameterService);
         timer.start();
         
         

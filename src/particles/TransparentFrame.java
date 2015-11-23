@@ -3,12 +3,17 @@ package particles;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -17,6 +22,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.scene.image.WritablePixelFormat;
+import javafx.geometry.Point2D;
 
 /**
  * Transparent javafx scene lifted and modified from:
@@ -25,9 +32,13 @@ import javafx.util.Duration;
 
 public class TransparentFrame {
 
-	private BufferedImage screenCapture;
+	private ParameterService parameterService;
+	private WritableImage screenshot;
+	private WritableImage previousScreenshot;
+	private WritablePixelFormat<IntBuffer> format = WritablePixelFormat.getIntArgbInstance();
 	
-	public TransparentFrame () {
+	public TransparentFrame (ParameterService parameterService) {
+		this.parameterService = parameterService;
 		
 		Stage stage = new Stage();
 		Label lbl = new Label("");
@@ -93,11 +104,62 @@ public class TransparentFrame {
 	}
 	
 	private void setScreenCapture (BufferedImage screenCapture) {
-		this.screenCapture = screenCapture;
+		this.previousScreenshot = this.screenshot;
+		this.screenshot = SwingFXUtils.toFXImage(screenCapture, null);	
+		
+		if (this.parameterService.isMotionDetection()) {
+			boolean widthIsEqual = this.screenshot.getWidth() == this.previousScreenshot.getWidth();
+			boolean heightIsEqual = this.screenshot.getHeight() == this.previousScreenshot.getHeight();
+			if (!widthIsEqual || !heightIsEqual) return;
+			
+			int width = (int) this.screenshot.getWidth();
+			int height = (int) this.screenshot.getHeight();
+			
+			int totalPixels = width * height;
+		
+			int[] thisBuffer = new int[totalPixels];
+			int[] previousBuffer = new int[totalPixels];
+			
+			PixelReader thisScreenshot = this.screenshot.getPixelReader();
+			PixelReader previousScreenshot = this.previousScreenshot.getPixelReader();
+			
+			thisScreenshot.getPixels(0, 0, width, height, format, thisBuffer, 0, width);
+			previousScreenshot.getPixels(0, 0, width, height, format, previousBuffer, 0, width);
+			
+			ArrayList<Point2D> pointList = new ArrayList<Point2D>();
+			
+			for (int i = 0; i < thisBuffer.length; i++) {
+				double colorDistance = this.getColorDistance(thisBuffer[i], previousBuffer[i]);
+				if (colorDistance > 10) {
+					int x = i % width;
+					int y = i / width;
+					pointList.add(new Point2D(x, y));
+				}
+			}
+			
+			this.parameterService.setMotionPointList(pointList);
+		}
 	}
 	
-	public BufferedImage getScreenCapture () {
-		return this.screenCapture;
+	private double getColorDistance (int thisImage, int previousImage) {
+		int thisR = thisImage >>> 16 & 0xFF;
+		int lastR = previousImage >>> 16 & 0xFF;
+		
+		int thisG = thisImage >>> 8 & 0xFF;
+		int lastG = previousImage >>> 8 & 0xFF;
+		
+		int thisB = thisImage & 0xFF;
+		int lastB = previousImage & 0xFF;
+		
+		double distanceR = Math.pow(thisR - lastR, 2);
+		double distanceG = Math.pow(thisG - lastG, 2);
+		double distanceB = Math.pow(thisB - lastB, 2);
+		
+		return Math.sqrt(distanceR + distanceG + distanceB);
+	}
+	
+	public WritableImage getScreenshot () {
+		return this.screenshot;
 	}
 	
 	private boolean getIsResize (double mouseX, double mouseY, double stageWidth, double stageHeight) {

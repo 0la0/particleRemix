@@ -1,15 +1,12 @@
 package particles;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.Pane;
+import javafx.scene.image.WritableImage;
 
 
 public class DisplayNode {
@@ -26,11 +23,10 @@ public class DisplayNode {
 	private CameraPositionService camerPosition;
 	
 	
-	public DisplayNode (int width, int height) {
+	public DisplayNode (int width, int height, ParameterService parameterService) {
 		this.width = width;
 		this.height = height;
 		
-		ParameterService parameterService = new ParameterService();
 		this.particleDriver = new ParticleDriver(parameterService);
 		this.midiServer = new MidiServer(parameterService);
 		this.camerPosition = new CameraPositionService(parameterService);
@@ -56,8 +52,8 @@ public class DisplayNode {
 		DraggableFxWorld draggableWorld = new DraggableFxWorld(this.scene, this.root, this.camerPosition.getCameraXform());
 	}
 
-	public void update (double elapsedTime, BufferedImage screenCapture) {
-		this.particleDriver.update(elapsedTime, screenCapture);
+	public void update (double elapsedTime, WritableImage screenshot) {
+		this.particleDriver.update(elapsedTime, screenshot);
 		this.camerPosition.update(elapsedTime);
 	}
 	

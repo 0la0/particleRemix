@@ -1,5 +1,8 @@
 package particles;
 
+import java.util.ArrayList;
+
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
 public class ParameterService {
@@ -13,6 +16,7 @@ public class ParameterService {
 	private double goalAttraction = 0.0001;
 	private boolean cameraIsInRoutine = false;
 	private boolean isMotionDetection = false;
+	private ArrayList<Point2D> motionPointList = new ArrayList<Point2D>();
 
 	public ParameterService () {}
 
@@ -122,6 +126,14 @@ public class ParameterService {
 
 	public void setMotionDetection (boolean isMotionDetection) {
 		this.isMotionDetection = isMotionDetection;
+	}
+	
+	public ArrayList<Point2D> getMotionPointList() {
+		return motionPointList;
+	}
+
+	public void setMotionPointList(ArrayList<Point2D> motionPointList) {
+		this.motionPointList = motionPointList;
 	}
 	
 }
