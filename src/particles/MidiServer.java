@@ -1,6 +1,7 @@
 package particles;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 import javafx.geometry.Point3D;
 
@@ -23,10 +24,19 @@ public class MidiServer {
 		MidiDeviceFactory.refreshDevices();
 		
 		String[] receivers = MidiDeviceFactory.getReceivers();
-		String targetDevice = Arrays.stream(receivers)
-			.filter(receiver -> receiver.indexOf("Trigger Finger") > -1)
-			.findFirst()
-			.get();
+		String targetDevice;
+		try {
+			targetDevice = Arrays.stream(receivers)
+					.filter(receiver -> receiver.indexOf("Trigger Finger") > -1)
+					.findFirst()
+					.get();
+		}
+		catch (NoSuchElementException e) {
+			System.out.println("Ahh! could not find midi device => nothing to control particles (for now)");
+			return;
+		}
+		
+		
 		
 		this.midiDevice = MidiDeviceFactory.getTransmitterDevice(targetDevice);
 		try {
