@@ -12,6 +12,7 @@ public class ParameterService {
 	private double initialVelocity = Math.random();
 	private double goalAttraction = 0.0001;
 	private boolean cameraIsInRoutine = false;
+	private boolean isMotionDetection = false;
 
 	public ParameterService () {}
 
@@ -114,4 +115,13 @@ public class ParameterService {
 	public void setCameraIsInRoutine (boolean cameraIsInRoutine) {
 		this.cameraIsInRoutine = cameraIsInRoutine;
 	}
+	
+	public boolean isMotionDetection () {
+		return isMotionDetection;
+	}
+
+	public void setMotionDetection (boolean isMotionDetection) {
+		this.isMotionDetection = isMotionDetection;
+	}
+	
 }
