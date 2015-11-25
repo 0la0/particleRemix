@@ -15,7 +15,6 @@ import javafx.scene.layout.BorderPane;
 
 public class Init extends Application {
 	
-	private TransparentFrame transparentFrame;
     private long lastTime;
     private final double ONE_MILLION = 1000000.0;
     private boolean isFullscreen = false;
@@ -31,8 +30,9 @@ public class Init extends Application {
         ParameterService parameterService = new ParameterService();
         ParticleDriver particleDriver = new ParticleDriver(parameterService);
         CameraPositionService cameraPosition = new CameraPositionService(parameterService);
+        DisplayFrame displayFrame = new DisplayFrame(displayWidth, displayHeight, particleDriver, cameraPosition);
         
-        DisplayNode displayNode = new DisplayNode(displayWidth, displayHeight, particleDriver, cameraPosition);
+        TransparentFrame transparentFrame = new TransparentFrame(parameterService);
         
         //---CREATE TIMER AND START---//
 		this.lastTime = System.nanoTime();
@@ -40,21 +40,19 @@ public class Init extends Application {
 			public void handle(long now) {
 				double elapsedTime = (now - lastTime) / ONE_MILLION;
 				lastTime = now;
-				displayNode.update(elapsedTime, transparentFrame.getScreenshot());
+				displayFrame.update(elapsedTime, transparentFrame.getScreenshot());
 			}
 		};
         
 		BorderPane pane = new BorderPane();
-		pane.setCenter(displayNode.getSubscene());
+		pane.setCenter(displayFrame.getSubScene());
 		scene.setRoot(pane);
 		primaryStage.setScene(scene);
         primaryStage.show();
         
-        displayNode.getSubscene().heightProperty().bind(pane.heightProperty());
-        displayNode.getSubscene().widthProperty().bind(pane.widthProperty());
+        displayFrame.getSubScene().heightProperty().bind(pane.heightProperty());
+        displayFrame.getSubScene().widthProperty().bind(pane.widthProperty());
         
-        
-        transparentFrame = new TransparentFrame(parameterService);
         timer.start();
         
         scene.setOnKeyPressed((KeyEvent e) -> {
@@ -74,7 +72,6 @@ public class Init extends Application {
         new MidiServer(parameterService);
 	}
 	
-
 	public static void main (String[] args) {
 		launch(args);
 	}

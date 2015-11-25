@@ -7,11 +7,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.image.WritableImage;
 
 
-public class DisplayNode {
+public class DisplayFrame {
 
 	private Group root = new Group();
 	private Xform world = new Xform();
-	private SubScene scene;
+	private SubScene subScene;
 	private Xform particleGroup = new Xform();
 	
 	private double width;
@@ -19,18 +19,16 @@ public class DisplayNode {
 	private ParticleDriver particleDriver;
 	private CameraPositionService camerPosition;
 	
-	
-	public DisplayNode (int width, int height, ParticleDriver particleDriver, CameraPositionService camerPosition) {
+	public DisplayFrame (int width, int height, ParticleDriver particleDriver, CameraPositionService camerPosition) {
 		this.width = width;
 		this.height = height;
 		this.particleDriver = particleDriver;
 		this.camerPosition = camerPosition;
 		
-		
 		root.getChildren().add(world);
 		//this.scene = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);
-		this.scene = new SubScene(root, width, height);
-		this.scene.setFill(Color.BLACK);
+		this.subScene = new SubScene(root, width, height);
+		this.subScene.setFill(Color.BLACK);
 		
 		AmbientLight light = new AmbientLight();
 	    light.setColor(Color.WHITE);
@@ -44,7 +42,7 @@ public class DisplayNode {
 		this.world.getChildren().addAll(this.particleGroup);
 	    
 		//DraggableFxWorld creates a 3D draggable world given a scene
-		DraggableFxWorld draggableWorld = new DraggableFxWorld(this.scene, this.root, this.camerPosition.getCameraXform());
+		new DraggableFxWorld(this.subScene, this.root, this.camerPosition.getCameraXform());
 	}
 
 	public void update (double elapsedTime, WritableImage screenshot) {
@@ -52,20 +50,19 @@ public class DisplayNode {
 		this.camerPosition.update(elapsedTime);
 	}
 	
-	public SubScene getSubscene () {
-		return this.scene;
+	public SubScene getSubScene () {
+		return this.subScene;
 	}
 		
 	public void setFullscreen (boolean isFullscreen, double w, double h) {
 		if (isFullscreen) {
-			this.scene.setWidth(w);
-			this.scene.setHeight(h);
+			this.subScene.setWidth(w);
+			this.subScene.setHeight(h);
 		}
 		else {
-			this.scene.setWidth(width);
-			this.scene.setHeight(height);
+			this.subScene.setWidth(width);
+			this.subScene.setHeight(height);
 		}
 	}
 	
-
 }
