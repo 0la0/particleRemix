@@ -2,10 +2,8 @@ package particles;
 
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.paint.Color;
-import javafx.scene.layout.Pane;
 import javafx.scene.image.WritableImage;
 
 
@@ -19,17 +17,14 @@ public class DisplayNode {
 	private double width;
 	private double height;
 	private ParticleDriver particleDriver;
-	private MidiServer midiServer;
 	private CameraPositionService camerPosition;
 	
 	
-	public DisplayNode (int width, int height, ParameterService parameterService) {
+	public DisplayNode (int width, int height, ParticleDriver particleDriver, CameraPositionService camerPosition) {
 		this.width = width;
 		this.height = height;
-		
-		this.particleDriver = new ParticleDriver(parameterService);
-		this.midiServer = new MidiServer(parameterService);
-		this.camerPosition = new CameraPositionService(parameterService);
+		this.particleDriver = particleDriver;
+		this.camerPosition = camerPosition;
 		
 		
 		root.getChildren().add(world);
@@ -57,16 +52,10 @@ public class DisplayNode {
 		this.camerPosition.update(elapsedTime);
 	}
 	
-	public Node getUiNode () {
+	public SubScene getSubscene () {
 		return this.scene;
 	}
-	
-	//bind to parent for resizing
-	public void bindSceneToParent (Pane parentPane) {
-		this.scene.heightProperty().bind(parentPane.heightProperty());
-		this.scene.widthProperty().bind(parentPane.widthProperty());
-	}
-	
+		
 	public void setFullscreen (boolean isFullscreen, double w, double h) {
 		if (isFullscreen) {
 			this.scene.setWidth(w);

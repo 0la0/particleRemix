@@ -19,7 +19,6 @@ public class Init extends Application {
     private long lastTime;
     private final double ONE_MILLION = 1000000.0;
     private boolean isFullscreen = false;
-    private ParameterService parameterService = new ParameterService();
 	
 	@Override
 	public void start (Stage primaryStage) {
@@ -29,7 +28,11 @@ public class Init extends Application {
 		Group root = new Group();
         Scene scene = new Scene(root, displayWidth, displayHeight, Color.LIGHTGREEN);
         
-        DisplayNode displayNode = new DisplayNode(displayWidth, displayHeight, parameterService);
+        ParameterService parameterService = new ParameterService();
+        ParticleDriver particleDriver = new ParticleDriver(parameterService);
+        CameraPositionService cameraPosition = new CameraPositionService(parameterService);
+        
+        DisplayNode displayNode = new DisplayNode(displayWidth, displayHeight, particleDriver, cameraPosition);
         
         //---CREATE TIMER AND START---//
 		this.lastTime = System.nanoTime();
@@ -42,15 +45,17 @@ public class Init extends Application {
 		};
         
 		BorderPane pane = new BorderPane();
-		pane.setCenter(displayNode.getUiNode());
-        scene.setRoot(pane);
-        displayNode.bindSceneToParent(pane);
+		pane.setCenter(displayNode.getSubscene());
+		scene.setRoot(pane);
 		primaryStage.setScene(scene);
         primaryStage.show();
         
+        displayNode.getSubscene().heightProperty().bind(pane.heightProperty());
+        displayNode.getSubscene().widthProperty().bind(pane.widthProperty());
+        
+        
         transparentFrame = new TransparentFrame(parameterService);
         timer.start();
-        
         
         scene.setOnKeyPressed((KeyEvent e) -> {
 			if (e.getCode() == KeyCode.SPACE || e.getCode() == KeyCode.ESCAPE) {
@@ -63,7 +68,10 @@ public class Init extends Application {
         	Platform.exit();
         	System.exit(0);
         });
-
+        
+        //create midi server for controlling parameters
+        //midi is an arbitrary choice, as any HMI could control the pramaters
+        new MidiServer(parameterService);
 	}
 	
 
