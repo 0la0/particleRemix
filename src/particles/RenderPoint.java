@@ -64,7 +64,7 @@ class RenderPoint {
 		return this.parameterService.getTtlUpperBound() * Math.random();
 	}
 	
-	public boolean getNothingToRender () {
+	public boolean hasNothingToRender () {
 		return this.nothingToRender;
 	}
 	

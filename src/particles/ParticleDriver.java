@@ -24,8 +24,6 @@ public class ParticleDriver {
 			Point3D velocity = parameterService.getVelocity();
 			double ttl = parameterService.getTtlUpperBound();
 			Particle particle = new Particle(position, velocity, color, ttl);
-			particle.setSwarmService(swarmService);
-			particle.setParameterService(parameterService);
 			this.particleList.add(particle);
 		}
 		this.swarmService.setParticleList(particleList);
@@ -42,7 +40,7 @@ public class ParticleDriver {
 			if (particle.isDead()) {
 				RenderPoint renderPoint = new RenderPoint(screenshot, parameterService);
 				
-				if (renderPoint.getNothingToRender()) {
+				if (renderPoint.hasNothingToRender()) {
 					particle.reset(
 							new Point3D(2000, 2000, 2000),
 							new Point3D(0, 0, 0),
@@ -58,9 +56,22 @@ public class ParticleDriver {
 				
 			}
 			else {
+				Point3D velocity = parameterService.getVelocity()
+						.add(getJitter())
+						.multiply(elapsedTime / 100.0);
+						
+				
+				if (parameterService.getSwarmIsOn()) {
+					velocity = velocity
+							.add(swarmService.moveTowardGoalState(particle));
+							//.add(swarmService.getRuleOneVector(particle));
+							//.add(swarmService.getRuleTwoVector(particle))
+							//.add(swarmService.getRuleThreeVector(particle));
+				}
+				
 				particle.update(
 						elapsedTime, 
-						parameterService.getVelocity(), 
+						velocity, 
 						parameterService.getScale(),
 						parameterService.getRotate());
 			}
@@ -73,6 +84,18 @@ public class ParticleDriver {
 	
 	private int getRandPosition () {
 		return (int) (100 * Math.random());
+	}
+	
+	private double getPosNeg () {
+		return Math.random() < 0.5 ? -1 : 1;
+	}
+	
+	private Point3D getJitter () {
+		double jitterFactor = 0.01;
+		double jitterX = this.getPosNeg() * jitterFactor * Math.random();
+		double jitterY = this.getPosNeg() * jitterFactor * Math.random();
+		double jitterZ = this.getPosNeg() * jitterFactor * Math.random();
+		return new Point3D(jitterX, jitterY, jitterZ);
 	}
 	
 }

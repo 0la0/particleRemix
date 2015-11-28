@@ -26,22 +26,11 @@ public class Particle {
 	private Scale sy = new Scale();
 	private Scale sz = new Scale();
 	
-	private SwarmService swarmService;
-	private ParameterService parameterService;
-	
 	
 	public Particle (Point3D position, Point3D velocity, Color color, double ttl) {
 		this.box = new Box(PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_SIZE);
 		this.box.getTransforms().addAll(rz, ry, rx, sx, sy, sz);
 		this.reset(position, velocity, color, ttl);
-	}
-	
-	public void setSwarmService (SwarmService swarmService) {
-		this.swarmService = swarmService;
-	}
-	
-	public void setParameterService (ParameterService parameterService) {
-		this.parameterService = parameterService;
 	}
 	
 	public void reset (Point3D position, Point3D velocity, Color color, double ttl) {
@@ -58,20 +47,8 @@ public class Particle {
 	public void update (double elapsedTime, Point3D wind, Point3D scale, Point3D rotation) {
 		this.ttl -= elapsedTime;
 		
-		wind = wind.add(this.getJitter());
-		
-		this.velocity = velocity.add( wind.multiply(elapsedTime / 100.0) );
-	
-		if (this.parameterService.getSwarmIsOn()) {
-			this.velocity = this.velocity
-					.add(swarmService.moveTowardGoalState(this));
-					//.add(swarmService.getRuleOneVector(this));
-					//.add(swarmService.getRuleTwoVector(this))
-					//.add(swarmService.getRuleThreeVector(this));
-		}
-				
+		this.velocity = this.velocity.add(wind);		
 		this.position = this.position.add(this.velocity);
-		
 		
 		this.setTranslate(this.position);
 		this.setRotate(rotation);
@@ -113,18 +90,6 @@ public class Particle {
 		this.rx.setAngle(rotation.getX());
 		this.ry.setAngle(rotation.getY());
 		this.rz.setAngle(rotation.getZ());
-	}
-	
-	private double getPosNeg () {
-		return Math.random() < 0.5 ? -1 : 1;
-	}
-	
-	private Point3D getJitter () {
-		double jitterFactor = 0.01;
-		double jitterX = this.getPosNeg() * jitterFactor * Math.random();
-		double jitterY = this.getPosNeg() * jitterFactor * Math.random();
-		double jitterZ = this.getPosNeg() * jitterFactor * Math.random();
-		return new Point3D(jitterX, jitterY, jitterZ);
 	}
 	
 }
