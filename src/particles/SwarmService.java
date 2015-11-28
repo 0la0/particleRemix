@@ -18,11 +18,8 @@ public class SwarmService {
 	private final int GOAL_DISTANCE = 200;
 	private double totalTime = 0;
 
-	public SwarmService (ParameterService parameterService) {
+	public SwarmService (ParameterService parameterService, ArrayList<Particle> particleList) {
 		this.parameterService = parameterService;
-	}
-	
-	public void setParticleList (ArrayList<Particle> particleList) {
 		this.particleList = particleList;
 	}
 	

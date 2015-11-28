@@ -15,7 +15,6 @@ public class ParticleDriver {
 	
 	public ParticleDriver (ParameterService parameterService) {
 		this.parameterService = parameterService;
-		this.swarmService = new SwarmService(parameterService);
 		
 		//---populate particle list with particles---//
 		for (int i = 0; i < NUM_PARTICLES; i++) {
@@ -26,7 +25,7 @@ public class ParticleDriver {
 			Particle particle = new Particle(position, velocity, color, ttl);
 			this.particleList.add(particle);
 		}
-		this.swarmService.setParticleList(particleList);
+		this.swarmService = new SwarmService(parameterService, particleList);
 	}
 	
 	public void update (double elapsedTime, WritableImage screenshot) {
