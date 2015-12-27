@@ -1,6 +1,8 @@
 package particles;
 
 
+import java.util.HashSet;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -28,9 +30,17 @@ public class Init extends Application {
         Scene scene = new Scene(root, displayWidth, displayHeight, Color.LIGHTGREEN);
         
         ParameterService parameterService = new ParameterService();
-        ParticleDriver particleDriver = new ParticleDriver(parameterService);
+      
+        IDriver particleDriver = new ParticleDriver(parameterService, "particleDriver");
+        IDriver imageDriver = new ImageDriver(parameterService, "imageDriver");
+        HashSet<IDriver> driverSet = new HashSet<IDriver>();
+        driverSet.add(particleDriver);
+        driverSet.add(imageDriver);
+        DriverManager driverManager = new DriverManager(driverSet);
+        driverManager.setActiveDriverByName("imageDriver");
+        
         CameraPositionService cameraPosition = new CameraPositionService(parameterService);
-        DisplayFrame displayFrame = new DisplayFrame(displayWidth, displayHeight, particleDriver, cameraPosition);
+        DisplayFrame displayFrame = new DisplayFrame(displayWidth, displayHeight, driverManager, cameraPosition);
         
         TransparentFrame transparentFrame = new TransparentFrame(parameterService);
         

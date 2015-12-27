@@ -12,17 +12,16 @@ public class DisplayFrame {
 	private Group root = new Group();
 	private Xform world = new Xform();
 	private SubScene subScene;
-	private Xform particleGroup = new Xform();
 	
 	private double width;
 	private double height;
-	private ParticleDriver particleDriver;
 	private CameraPositionService camerPosition;
+	private DriverManager driverManager;
 	
-	public DisplayFrame (int width, int height, ParticleDriver particleDriver, CameraPositionService camerPosition) {
+	public DisplayFrame (int width, int height, DriverManager driverManager, CameraPositionService camerPosition) {
 		this.width = width;
 		this.height = height;
-		this.particleDriver = particleDriver;
+		this.driverManager = driverManager;
 		this.camerPosition = camerPosition;
 		
 		root.getChildren().add(world);
@@ -35,18 +34,17 @@ public class DisplayFrame {
 	    Group lightGroup = new Group();
 	    lightGroup.getChildren().add(light);
 	    root.getChildren().add(lightGroup);
-
-	    this.particleDriver.getParticleList().forEach(particle -> {
-			particleGroup.getChildren().add(particle.getBox());
-		});
-		this.world.getChildren().addAll(this.particleGroup);
+	    
+	    
+	    //TODO: abstract this into the 'setActiveDriver' routine
+		this.world.getChildren().addAll(driverManager.getActiveDriver().getParticleGroup());
 	    
 		//DraggableFxWorld creates a 3D draggable world given a scene
 		new DraggableFxWorld(this.subScene, this.root, this.camerPosition.getCameraXform());
 	}
 
 	public void update (double elapsedTime, WritableImage screenshot) {
-		this.particleDriver.update(elapsedTime, screenshot);
+		this.driverManager.getActiveDriver().update(elapsedTime, screenshot);
 		this.camerPosition.update(elapsedTime);
 	}
 	
