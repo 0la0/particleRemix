@@ -13,9 +13,7 @@ import javafx.scene.shape.DrawMode;
 
 public class ImageDriver implements IDriver {
 
-	//private Xform parentGroup = new Xform();
 	private Xform particleGroup = new Xform();
-	//private Xform meshGroup = new Xform();
 	private final int NUM_PARTICLES = 5000;
 	private ArrayList<Particle> particleList = new ArrayList<Particle>();
 	private ParameterService parameterService;
@@ -43,23 +41,14 @@ public class ImageDriver implements IDriver {
 		}
 		
 		
-		
 		this.meshView = this.createMesh();
-		//this.meshView.setTranslateZ(1000);
 	    Group plane = new Group(this.meshView);	    
 	    this.particleGroup.getChildren().add(plane);
-	    
 	    
 	    
 	    this.particleList.forEach(particle -> {
 			particleGroup.getChildren().add(particle.getBox());
 		});
-	    //this.meshGroup.getChildren().add(plane);
-	    
-	    //this.meshGroup.setTranslateX(1000);
-	    
-//	    this.parentGroup.getChildren().addAll(this.particleGroup.getChildren());
-//	    this.parentGroup.getChildren().addAll(this.meshGroup.getChildren());
 	}
 	
 	private MeshView createMesh () {
