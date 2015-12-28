@@ -21,7 +21,7 @@ public class CameraPositionService {
 		}
 		if (this.routineAngle >= 360) {
 			this.routineAngle = 0;
-			this.cameraXform.ry.setAngle(0);
+			this.cameraXform.ry.setAngle(this.routineAngle);
 			this.parameterService.setCameraIsInRoutine(false);
 		}
 	}

@@ -92,4 +92,14 @@ public class Particle {
 		this.rz.setAngle(rotation.getZ());
 	}
 	
+	public void setPivotX (double pivotX) {
+		this.sx.setPivotX(pivotX);
+		this.rx.setPivotX(pivotX);
+	}
+	
+	public void setPivotY (double pivotY) {
+		this.sx.setPivotY(pivotY);
+		this.rx.setPivotY(pivotY);
+	}
+	
 }
