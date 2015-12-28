@@ -12,7 +12,7 @@ public class DraggableFxWorld {
 	private Xform cameraXform;
 	private Xform cameraXform2 = new Xform();
 	private Xform cameraXform3 = new Xform();
-	private double cameraDistance = 1000;
+	private double cameraDistance = 100;
 	
 	private double mousePosX;
 	private double mousePosY;
@@ -85,6 +85,11 @@ public class DraggableFxWorld {
 			}
 		});
 		
+	}
+	
+	public void setCameraDistance (double cameraDistance) {
+		this.cameraDistance = cameraDistance;
+		camera.setTranslateZ(-cameraDistance);
 	}
 
 }

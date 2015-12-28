@@ -20,6 +20,7 @@ public class ParameterService {
 
 	public ParameterService () {}
 
+	
 	public Point3D getVelocity () {
 		return velocity;
 	}

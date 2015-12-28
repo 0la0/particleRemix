@@ -12,10 +12,12 @@ public class MidiMessageHandler {
 	private double maxValue = 127.0;
 	
 	private ParameterService parameterService;
+	private DisplayFrame displayFrame;
 	private HashMap<Integer, IParameterAction> midiMap = new HashMap<Integer, IParameterAction>();
 	
-	public MidiMessageHandler (ParameterService parameterService) {
+	public MidiMessageHandler (ParameterService parameterService, DisplayFrame displayFrame) {
 		this.parameterService = parameterService;
+		this.displayFrame = displayFrame;
 		this.initializeMap();
 	}
 	
@@ -73,6 +75,25 @@ public class MidiMessageHandler {
 			}
 		});	
 		
+		//P02 left slider => camera distance
+		midiMap.put(25, (ShortMessage sm) -> {
+			double normalValue = getNormalizedValue(sm.getData2());
+			double adjustedValue = 100 + 600 * normalValue;
+			displayFrame.setCameraDistance(adjustedValue);
+		});	
+		
+		//P02 top button row => set active drivers
+		midiMap.put(12, (ShortMessage sm) -> {
+			if (sm.getData2() > 0) {
+				displayFrame.setActiveDriverByName("particleDriver");
+			}
+		});	
+		midiMap.put(13, (ShortMessage sm) -> {
+			if (sm.getData2() > 0) {
+				displayFrame.setActiveDriverByName("imageDriver");
+			}
+		});	
+		
 	}
 	
 	private double getNormalizedScale (int realValue) {
@@ -85,6 +106,10 @@ public class MidiMessageHandler {
 	
 	private double getNormalizedRotate (int realValue) {
 		return (realValue / maxValue) * 360;
+	}
+	
+	private double getNormalizedValue (int realValue) {
+		return realValue / maxValue;
 	}
 
 }

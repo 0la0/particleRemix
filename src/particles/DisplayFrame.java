@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.SubScene;
 import javafx.scene.paint.Color;
 import javafx.scene.image.WritableImage;
+import javafx.application.Platform;
 
 
 public class DisplayFrame {
@@ -17,6 +18,7 @@ public class DisplayFrame {
 	private double height;
 	private CameraPositionService camerPosition;
 	private DriverManager driverManager;
+	private DraggableFxWorld draggableWorld;
 	
 	public DisplayFrame (int width, int height, DriverManager driverManager, CameraPositionService camerPosition) {
 		this.width = width;
@@ -35,12 +37,10 @@ public class DisplayFrame {
 	    lightGroup.getChildren().add(light);
 	    root.getChildren().add(lightGroup);
 	    
-	    
-	    //TODO: abstract this into the 'setActiveDriver' routine
-		this.world.getChildren().addAll(driverManager.getActiveDriver().getParticleGroup());
+	    this.world.getChildren().addAll(driverManager.getActiveDriver().getParticleGroup());
 	    
 		//DraggableFxWorld creates a 3D draggable world given a scene
-		new DraggableFxWorld(this.subScene, this.root, this.camerPosition.getCameraXform());
+		this.draggableWorld = new DraggableFxWorld(this.subScene, this.root, this.camerPosition.getCameraXform());
 	}
 
 	public void update (double elapsedTime, WritableImage screenshot) {
@@ -61,6 +61,20 @@ public class DisplayFrame {
 			this.subScene.setWidth(width);
 			this.subScene.setHeight(height);
 		}
+	}
+	
+	public void setActiveDriverByName (String activeDriverName) {
+		Platform.runLater(() -> {
+			world.getChildren().removeAll(driverManager.getActiveDriver().getParticleGroup());
+			driverManager.setActiveDriverByName(activeDriverName);
+			world.getChildren().addAll(driverManager.getActiveDriver().getParticleGroup());
+		});
+	}
+	
+	public void setCameraDistance (double cameraDistance) {
+		Platform.runLater(() -> {
+			draggableWorld.setCameraDistance(cameraDistance);
+		});
 	}
 	
 }

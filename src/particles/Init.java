@@ -79,7 +79,7 @@ public class Init extends Application {
         
         //create midi server for controlling parameters
         //midi is an arbitrary choice, as any HMI could control the pramaters
-        MidiMessageHandler midiHandler = new MidiMessageHandler(parameterService);
+        MidiMessageHandler midiHandler = new MidiMessageHandler(parameterService, displayFrame);
         new MidiServer(midiHandler);
 	}
 	
