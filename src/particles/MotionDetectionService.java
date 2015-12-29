@@ -40,7 +40,7 @@ public class MotionDetectionService {
 		
 		for (int i = 0; i < thisBuffer.length; i++) {
 			double colorDistance = this.getColorDistance(thisBuffer[i], previousBuffer[i]);
-			if (colorDistance > 10) {
+			if (colorDistance > this.parameterService.getMotionThreshold()) {
 				int x = i % width;
 				int y = i / width;
 				pointList.add(new Point2D(x, y));

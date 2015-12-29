@@ -68,18 +68,26 @@ public class MidiMessageHandler {
 				parameterService.setCameraIsInRoutine(true);
 			}
 		});
-		//bottom left button => motion detection
-		midiMap.put(16, (ShortMessage sm) -> {
-			if (sm.getData2() > 0) {
-				parameterService.setMotionDetection(!parameterService.isMotionDetection());
-			}
-		});	
 		
 		//P02 left slider => camera distance
 		midiMap.put(25, (ShortMessage sm) -> {
 			double normalValue = getNormalizedValue(sm.getData2());
 			double adjustedValue = 100 + 600 * normalValue;
 			displayFrame.setCameraDistance(adjustedValue);
+		});
+		
+		//P02 middle left slider => motion detection threshold
+		midiMap.put(26, (ShortMessage sm) -> {
+			double normalValue = getNormalizedValue(sm.getData2());
+			double adjustedValue = 100 * normalValue;
+			parameterService.setMotionThreshold(adjustedValue);
+		});	
+		
+		//P02 middle right slider => image refresh rate upper bound
+		midiMap.put(27, (ShortMessage sm) -> {
+			double normalValue = getNormalizedValue(sm.getData2());
+			double adjustedValue = 3000 * normalValue;
+			parameterService.setImageRefreshRate(adjustedValue);
 		});	
 		
 		//P02 top button row => set active drivers

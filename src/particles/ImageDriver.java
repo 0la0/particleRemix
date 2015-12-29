@@ -14,14 +14,15 @@ import javafx.scene.shape.DrawMode;
 public class ImageDriver implements IDriver {
 
 	private Xform particleGroup = new Xform();
-	private final int NUM_PARTICLES = 5000;
 	private ArrayList<Particle> particleList = new ArrayList<Particle>();
 	private ParameterService parameterService;
 	private String name;
-	private final double RENDER_MULTIPLIER = 50;
-	
 	private MeshView meshView;
+	private double timeSinceRefresh = 0;
+	private double timeToNextRefresh = 0;
 	
+	private final int NUM_PARTICLES = 5000;
+	private final double RENDER_MULTIPLIER = 50;
 	private final int MATERIAL_Z_INDEX = 0;
 	
 	
@@ -85,8 +86,17 @@ public class ImageDriver implements IDriver {
 		if (screenshot == null) {
 			return;
 		}
-		
-		this.meshView.setMaterial(new PhongMaterial(Color.WHITE, screenshot, null, null, null));
+		if (this.parameterService.getImageRefreshRate() > 0) {
+			this.timeSinceRefresh += elapsedTime;
+			if (this.timeSinceRefresh > this.timeToNextRefresh) {
+				this.meshView.setMaterial(new PhongMaterial(Color.WHITE, screenshot, null, null, null));
+				this.timeSinceRefresh = 0;
+				this.timeToNextRefresh = this.parameterService.getImageRefreshRate() * Math.random();
+			}
+		}
+		else {
+			this.meshView.setMaterial(new PhongMaterial(Color.WHITE, screenshot, null, null, null));
+		}
 		
 		double screenshotRatio = screenshot.getWidth() / screenshot.getHeight();
 		double width = RENDER_MULTIPLIER * screenshotRatio;
@@ -125,10 +135,6 @@ public class ImageDriver implements IDriver {
 				
 			}
 			else {
-//				Point3D velocity = parameterService.getVelocity()
-//						.add(getJitter())
-//						.multiply(elapsedTime / 100.0);
-				
 				Point3D velocity = new Point3D(0, 0, 0);
 				
 				particle.update(

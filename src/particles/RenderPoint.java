@@ -17,7 +17,7 @@ class RenderPoint {
 	public RenderPoint (WritableImage screenshot, ParameterService parameterService) {
 		this.parameterService = parameterService;
 		
-		if (this.parameterService.isMotionDetection()) {
+		if (this.parameterService.getMotionThreshold() > 0) {
 			if (this.parameterService.getMotionPointList().size() > 0) {
 				//get sample point from lookup
 				int randIndex = (int) (this.parameterService.getMotionPointList().size() * Math.random());

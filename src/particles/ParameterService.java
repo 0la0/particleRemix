@@ -15,8 +15,9 @@ public class ParameterService {
 	private double initialVelocity = Math.random();
 	private double goalAttraction = 0.0001;
 	private boolean cameraIsInRoutine = false;
-	private boolean isMotionDetection = false;
+	private double motionThreshold = 0;
 	private ArrayList<Point2D> motionPointList = new ArrayList<Point2D>();
+	private double imageRefreshRate = 0;
 
 	public ParameterService () {}
 
@@ -121,12 +122,12 @@ public class ParameterService {
 		this.cameraIsInRoutine = cameraIsInRoutine;
 	}
 	
-	public boolean isMotionDetection () {
-		return isMotionDetection;
+	public double getMotionThreshold () {
+		return this.motionThreshold;
 	}
 
-	public void setMotionDetection (boolean isMotionDetection) {
-		this.isMotionDetection = isMotionDetection;
+	public void setMotionThreshold (double motionThreshold) {
+		this.motionThreshold = motionThreshold;
 	}
 	
 	public ArrayList<Point2D> getMotionPointList() {
@@ -135,6 +136,14 @@ public class ParameterService {
 
 	public void setMotionPointList(ArrayList<Point2D> motionPointList) {
 		this.motionPointList = motionPointList;
+	}
+	
+	public double getImageRefreshRate () {
+		return this.imageRefreshRate;
+	}
+	
+	public void setImageRefreshRate (double imageRefreshRate) {
+		this.imageRefreshRate = imageRefreshRate;
 	}
 	
 }

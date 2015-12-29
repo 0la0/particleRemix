@@ -110,7 +110,7 @@ public class TransparentFrame {
 		this.previousScreenshot = this.currentScreenshot;
 		this.currentScreenshot = SwingFXUtils.toFXImage(screenCapture, null);	
 		
-		if (this.parameterService.isMotionDetection()) {
+		if (this.parameterService.getMotionThreshold() > 0) {
 			this.motionDetector.runMotionDetection(this.currentScreenshot, this.previousScreenshot);
 		}
 	}
