@@ -11,7 +11,6 @@ public class ParameterService {
 	private Point3D scale = new Point3D(1, 1, 1);
 	private Point3D rotate = new Point3D(0, 0, 0);
 	private double ttlUpperBound = 2500;
-	private boolean swarmIsOn = false;
 	private double initialVelocity = Math.random();
 	private double goalAttraction = 0.0001;
 	private boolean cameraIsInRoutine = false;
@@ -88,14 +87,6 @@ public class ParameterService {
 
 	public void setTtlUpperBound (double ttlUpperBound) {
 		this.ttlUpperBound = ttlUpperBound;
-	}
-
-	public boolean getSwarmIsOn() {
-		return this.swarmIsOn;
-	}
-
-	public void setSwarmIsOn(boolean swarmIsOn) {
-		this.swarmIsOn = swarmIsOn;
 	}
 	
 	public double getInitialVelocity () {

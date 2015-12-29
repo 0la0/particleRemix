@@ -56,12 +56,6 @@ public class MidiMessageHandler {
 		midiMap.put(45, (ShortMessage sm) -> parameterService.setRotateZ(getNormalizedRotate(sm.getData2())));
 		//bottom knob 4 => goalAttraction
 		midiMap.put(49, (ShortMessage sm) -> parameterService.setGoalAttraction(sm.getData2() * 0.00001));
-		//top left button => toggle swarm
-		midiMap.put(28, (ShortMessage sm) -> {
-			if (sm.getData2() > 0) {
-				parameterService.setSwarmIsOn(!parameterService.getSwarmIsOn());
-			}
-		});
 		//bottom right button => camera routine
 		midiMap.put(19, (ShortMessage sm) -> {
 			if (sm.getData2() > 0) {

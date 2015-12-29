@@ -68,7 +68,7 @@ public class ParticleDriver implements IDriver {
 						.multiply(elapsedTime / 100.0);
 						
 				
-				if (parameterService.getSwarmIsOn()) {
+				if (parameterService.getGoalAttraction() > 0) {
 					velocity = velocity
 							.add(swarmService.moveTowardGoalState(particle));
 							//.add(swarmService.getRuleOneVector(particle));
