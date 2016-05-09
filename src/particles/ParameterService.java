@@ -12,7 +12,7 @@ public class ParameterService {
 	private Point3D rotate = new Point3D(0, 0, 0);
 	private double ttlUpperBound = 2500;
 	private double initialVelocity = Math.random();
-	private double goalAttraction = 0.0001;
+	private double goalAttraction = 0;
 	private boolean cameraIsInRoutine = false;
 	private double motionThreshold = 0;
 	private ArrayList<Point2D> motionPointList = new ArrayList<Point2D>();

@@ -37,7 +37,7 @@ public class Init extends Application {
         driverSet.add(particleDriver);
         driverSet.add(imageDriver);
         DriverManager driverManager = new DriverManager(driverSet);
-        driverManager.setActiveDriverByName("imageDriver");
+        driverManager.setActiveDriverByName("particleDriver");
         
         CameraPositionService cameraPosition = new CameraPositionService(parameterService);
         DisplayFrame displayFrame = new DisplayFrame(displayWidth, displayHeight, driverManager, cameraPosition);
@@ -79,8 +79,11 @@ public class Init extends Application {
         
         //create midi server for controlling parameters
         //midi is an arbitrary choice, as any HMI could control the pramaters
-        MidiMessageHandler midiHandler = new MidiMessageHandler(parameterService, displayFrame);
-        new MidiServer(midiHandler);
+        //MidiMessageHandler midiHandler = new MidiMessageHandler(parameterService, displayFrame);
+        //new MidiServer(midiHandler);
+        
+        WebSocketMessageHandler wsHandler = new WebSocketMessageHandler(parameterService, displayFrame);
+        new WsServer(wsHandler);
 	}
 	
 	public static void main (String[] args) {
