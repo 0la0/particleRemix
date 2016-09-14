@@ -1,4 +1,4 @@
-package particles;
+package etc.a0la0.particleRemix;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;

@@ -1,4 +1,4 @@
-package particles;
+package etc.a0la0.particleRemix;
 
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;

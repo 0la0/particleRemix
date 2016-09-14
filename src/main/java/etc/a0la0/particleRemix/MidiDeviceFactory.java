@@ -1,4 +1,4 @@
-package particles;
+package etc.a0la0.particleRemix;
 
 /*
  *  Lifted and modified from:
