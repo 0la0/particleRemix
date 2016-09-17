@@ -1,4 +1,4 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui;
 
 import java.util.Set;
 

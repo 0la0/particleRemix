@@ -1,19 +1,17 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui;
 
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import etc.a0la0.particleRemix.messaging.ParameterService;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -23,8 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javafx.scene.image.WritablePixelFormat;
-import javafx.geometry.Point2D;
 
 /**
  * Transparent javafx scene lifted and modified from:

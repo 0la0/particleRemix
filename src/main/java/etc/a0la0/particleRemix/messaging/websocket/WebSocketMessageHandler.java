@@ -1,4 +1,7 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.messaging.websocket;
+
+import etc.a0la0.particleRemix.messaging.ParameterService;
+import etc.a0la0.particleRemix.ui.DisplayFrame;
 
 import java.util.HashMap;
 

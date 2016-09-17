@@ -1,5 +1,7 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui;
 
+import etc.a0la0.particleRemix.ui.util.DraggableFxWorld;
+import etc.a0la0.particleRemix.ui.util.Xform;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.SubScene;

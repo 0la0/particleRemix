@@ -1,8 +1,9 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
+import etc.a0la0.particleRemix.messaging.ParameterService;
 import javafx.geometry.Point2D;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;

@@ -1,7 +1,8 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui;
 
 import java.util.ArrayList;
 
+import etc.a0la0.particleRemix.messaging.ParameterService;
 import javafx.geometry.Point3D;
 
 /**
@@ -32,14 +33,14 @@ public class SwarmService {
 		
 		this.meanPosition = particleList.stream()
 				.map(Particle::getPosition)
-				.reduce(new Point3D(0, 0, 0),
-						(sum, currentPoint) -> sum.add(currentPoint))
+				.reduce(new Point3D(0, 0, 0), Point3D::add)
+						//(sum, currentPoint) -> sum.add(currentPoint))
 				.multiply(1 / (particleList.size() * 1.0));
 		
 		this.meanVelocity = particleList.stream()
 				.map(Particle::getVelocity)
-				.reduce(new Point3D(0, 0, 0),
-						(sum, currentPoint) -> sum.add(currentPoint))
+				.reduce(new Point3D(0, 0, 0), Point3D::add)
+						//(sum, currentPoint) -> sum.add(currentPoint))
 				.multiply(1 / (particleList.size() * 1.0));
 	}
 	
@@ -53,9 +54,7 @@ public class SwarmService {
 	//Boids mind their neighbor's personal space
 	public Point3D getRuleTwoVector (Particle particle) {
 		Point3D distance = particleList.stream()
-				.filter(p -> {
-					return p.getPosition().distance(particle.getPosition()) < 10;
-				})
+				.filter(p -> p.getPosition().distance(particle.getPosition()) < 10)
 				.map(Particle::getPosition)
 				.reduce(new Point3D(0, 0, 0), 
 						(sum, currentPoint) -> sum.subtract(currentPoint.subtract(particle.getPosition())))

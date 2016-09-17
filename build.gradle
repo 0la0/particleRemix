@@ -16,6 +16,6 @@ dependencies {
 }
 
 task(runApp, dependsOn: 'classes', type: JavaExec) {
-    main = 'etc.a0la0.particleRemix.Init'
+    main = 'etc.a0la0.particleRemix.ui.Init'
     classpath = sourceSets.main.runtimeClasspath
 }

@@ -1,4 +1,4 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui.util;
 /*
  * Copyright (c) 2011, 2013 Oracle and/or its affiliates.
  * All rights reserved. Use is subject to license terms.

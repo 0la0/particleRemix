@@ -1,4 +1,7 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui;
+
+import etc.a0la0.particleRemix.messaging.ParameterService;
+import etc.a0la0.particleRemix.ui.util.Xform;
 
 public class CameraPositionService {
 	

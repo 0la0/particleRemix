@@ -1,4 +1,4 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui.util;
 
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;

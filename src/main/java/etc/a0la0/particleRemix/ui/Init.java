@@ -1,8 +1,11 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui;
 
 
 import java.util.HashSet;
 
+import etc.a0la0.particleRemix.messaging.ParameterService;
+import etc.a0la0.particleRemix.messaging.websocket.WebSocketMessageHandler;
+import etc.a0la0.particleRemix.messaging.websocket.WsServer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;

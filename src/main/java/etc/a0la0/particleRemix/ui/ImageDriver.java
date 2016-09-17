@@ -1,7 +1,9 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.ui;
 
 import java.util.ArrayList;
 
+import etc.a0la0.particleRemix.messaging.ParameterService;
+import etc.a0la0.particleRemix.ui.util.Xform;
 import javafx.geometry.Point3D;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -9,7 +11,6 @@ import javafx.scene.shape.TriangleMesh;
 import javafx.scene.shape.MeshView;
 import javafx.scene.Group;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.DrawMode;
 
 public class ImageDriver implements IDriver {
 

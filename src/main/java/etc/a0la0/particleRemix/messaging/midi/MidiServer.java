@@ -1,4 +1,4 @@
-package etc.a0la0.particleRemix;
+package etc.a0la0.particleRemix.messaging.midi;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -14,8 +14,8 @@ public class MidiServer {
 	
 	private MidiDevice midiDevice;
 	private MidiMessageHandler messageHandler;
-	
-	
+
+
 	public MidiServer (MidiMessageHandler messageHandler) {
 		this.messageHandler = messageHandler;
 		
