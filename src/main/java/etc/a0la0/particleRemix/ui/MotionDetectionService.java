@@ -2,6 +2,7 @@ package etc.a0la0.particleRemix.ui;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import javafx.geometry.Point2D;
@@ -37,7 +38,7 @@ public class MotionDetectionService {
 		currentPixelBuffer.getPixels(0, 0, width, height, format, thisBuffer, 0, width);
 		previousPixelBuffer.getPixels(0, 0, width, height, format, previousBuffer, 0, width);
 		
-		ArrayList<Point2D> pointList = new ArrayList<Point2D>();
+		List<Point2D> pointList = new ArrayList<>();
 		
 		for (int i = 0; i < thisBuffer.length; i++) {
 			double colorDistance = this.getColorDistance(thisBuffer[i], previousBuffer[i]);

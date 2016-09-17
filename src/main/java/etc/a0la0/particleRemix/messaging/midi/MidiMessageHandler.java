@@ -1,9 +1,9 @@
 package etc.a0la0.particleRemix.messaging.midi;
 
-import etc.a0la0.particleRemix.messaging.IParameterAction;
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import etc.a0la0.particleRemix.ui.DisplayFrame;
 
+import java.util.Map;
 import java.util.HashMap;
 
 import javax.sound.midi.ShortMessage;
@@ -17,7 +17,11 @@ public class MidiMessageHandler {
 	
 	private ParameterService parameterService;
 	private DisplayFrame displayFrame;
-	private HashMap<Integer, IParameterAction> midiMap = new HashMap<Integer, IParameterAction>();
+	private Map<Integer, ParamAction> midiMap = new HashMap<>();
+
+	private interface ParamAction {
+		void runAction (ShortMessage sm);
+	}
 	
 	public MidiMessageHandler (ParameterService parameterService, DisplayFrame displayFrame) {
 		this.parameterService = parameterService;

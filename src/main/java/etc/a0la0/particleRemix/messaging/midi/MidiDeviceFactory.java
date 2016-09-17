@@ -5,6 +5,7 @@ package etc.a0la0.particleRemix.messaging.midi;
  *  https://github.com/dinchak/pages-2/blob/master/src/org/monome/pages/midi/MidiDeviceFactory.java
  */
 
+import java.util.List;
 import java.util.ArrayList;
 
 import javax.sound.midi.MidiDevice;
@@ -16,13 +17,13 @@ import javax.sound.midi.Transmitter;
 
 public class MidiDeviceFactory {
 
-	private static ArrayList<MidiDevice> transmitters;
+	private static List<MidiDevice> transmitters;
 	
-	private static ArrayList<MidiDevice> receivers;
+	private static List<MidiDevice> receivers;
 	
 	public static void refreshDevices () {
-		transmitters = new ArrayList<MidiDevice>();
-		receivers = new ArrayList<MidiDevice>();
+		transmitters = new ArrayList<>();
+		receivers = new ArrayList<>();
 		
 		MidiDevice.Info[] deviceInfo = MidiSystem.getMidiDeviceInfo();
 		for (int i = 0; i < deviceInfo.length; i++) {
@@ -68,7 +69,7 @@ public class MidiDeviceFactory {
 	
 	public static Receiver getReceiver (String deviceInfo) {
 		for (MidiDevice midiDevice : receivers) {
-			if (midiDevice.getDeviceInfo().toString().compareTo(deviceInfo) == 0) {
+			if (midiDevice.getDeviceInfo().toString().equals(deviceInfo)) {
 				try {
 					return midiDevice.getReceiver();
 				} catch (MidiUnavailableException e) {
@@ -81,7 +82,7 @@ public class MidiDeviceFactory {
 	
 	public static MidiDevice getReceiverDevice (String deviceInfo) {
 		for (MidiDevice midiDevice : receivers) {
-			if (midiDevice.getDeviceInfo().toString().compareTo(deviceInfo) == 0) {
+			if (midiDevice.getDeviceInfo().toString().equals(deviceInfo)) {
 				return midiDevice;
 			}
 		}
@@ -90,7 +91,7 @@ public class MidiDeviceFactory {
 	
 	public static MidiDevice getTransmitterDevice (String deviceInfo) {
 		for (MidiDevice midiDevice : transmitters) {
-			if (midiDevice.getDeviceInfo().toString().compareTo(deviceInfo) == 0) {
+			if (midiDevice.getDeviceInfo().toString().equals(deviceInfo)) {
 				return midiDevice;
 			}
 		}

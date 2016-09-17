@@ -1,6 +1,7 @@
 package etc.a0la0.particleRemix.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import etc.a0la0.particleRemix.ui.util.Xform;
@@ -12,10 +13,10 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.Group;
 import javafx.scene.paint.PhongMaterial;
 
-public class ImageDriver implements IDriver {
+public class ImageDriver implements DriverManager.Driver {
 
 	private Xform particleGroup = new Xform();
-	private ArrayList<Particle> particleList = new ArrayList<Particle>();
+	private List<Particle> particleList = new ArrayList<>();
 	private ParameterService parameterService;
 	private String name;
 	private MeshView meshView;

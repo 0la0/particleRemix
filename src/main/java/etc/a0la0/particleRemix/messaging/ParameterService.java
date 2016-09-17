@@ -1,6 +1,7 @@
 package etc.a0la0.particleRemix.messaging;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -15,7 +16,7 @@ public class ParameterService {
 	private double goalAttraction = 0;
 	private boolean cameraIsInRoutine = false;
 	private double motionThreshold = 0;
-	private ArrayList<Point2D> motionPointList = new ArrayList<Point2D>();
+	private List<Point2D> motionPointList = new ArrayList<>();
 	private double imageRefreshRate = 0;
 
 	public ParameterService () {}
@@ -121,11 +122,11 @@ public class ParameterService {
 		this.motionThreshold = motionThreshold;
 	}
 	
-	public ArrayList<Point2D> getMotionPointList() {
+	public List<Point2D> getMotionPointList() {
 		return motionPointList;
 	}
 
-	public void setMotionPointList(ArrayList<Point2D> motionPointList) {
+	public void setMotionPointList(List<Point2D> motionPointList) {
 		this.motionPointList = motionPointList;
 	}
 	

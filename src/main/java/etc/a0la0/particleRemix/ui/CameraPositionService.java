@@ -16,7 +16,7 @@ public class CameraPositionService {
 	public Xform getCameraXform () {
 		return this.cameraXform;
 	}
-	
+
 	public void update (double elapsedTime) {
 		if (this.parameterService.cameraIsInRoutine()) {
 			this.routineAngle = cameraXform.ry.getAngle() + elapsedTime * 0.1;

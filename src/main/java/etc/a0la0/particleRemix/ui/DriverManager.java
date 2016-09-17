@@ -1,13 +1,22 @@
 package etc.a0la0.particleRemix.ui;
 
+import etc.a0la0.particleRemix.ui.util.Xform;
+import javafx.scene.image.WritableImage;
+
 import java.util.Set;
 
 public class DriverManager {
 	
-	private Set<IDriver> drivers;
-	private IDriver activeDriver;
+	private Set<Driver> drivers;
+	private Driver activeDriver;
+
+	interface Driver {
+		void update (double elapsedTime, WritableImage screenshot);
+		Xform getParticleGroup ();
+		String getName ();
+	}
 	
-	public DriverManager (Set<IDriver> drivers) {
+	public DriverManager (Set<Driver> drivers) {
 		this.drivers = drivers;
 	}
 	
@@ -18,7 +27,7 @@ public class DriverManager {
 				.get();
 	}
 	
-	public IDriver getActiveDriver () {
+	public Driver getActiveDriver () {
 		return this.activeDriver;
 	}
 

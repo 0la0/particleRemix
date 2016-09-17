@@ -56,11 +56,11 @@ public class MidiServer {
 		}
 		
 		private void printMessage (ShortMessage sm) {
-			StringBuffer sb = new StringBuffer();
-			sb.append(sm.getCommand() + ", ");
-			sb.append(sm.getChannel() + ", ");
-			sb.append(sm.getData1() + ", ");
-			sb.append(sm.getData2());
+			StringBuffer sb = new StringBuffer()
+				.append(sm.getCommand() + ", ")
+				.append(sm.getChannel() + ", ")
+				.append(sm.getData1() + ", ")
+				.append(sm.getData2());
 			System.out.println(sb.toString());
 		}
 		

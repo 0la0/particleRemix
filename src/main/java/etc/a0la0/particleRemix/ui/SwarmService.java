@@ -1,6 +1,7 @@
 package etc.a0la0.particleRemix.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import javafx.geometry.Point3D;
@@ -14,17 +15,17 @@ public class SwarmService {
 	private ParameterService parameterService;
 	private Point3D meanPosition = new Point3D(0, 0, 0);
 	private Point3D meanVelocity = new Point3D(0, 0, 0);
-	private ArrayList<Particle> particleList;
+	private List<Particle> particleList;
 	private Point3D goalState = new Point3D(0, 0, 0);
 	private final int GOAL_DISTANCE = 200;
 	private double totalTime = 0;
 
-	public SwarmService (ParameterService parameterService, ArrayList<Particle> particleList) {
+	public SwarmService (ParameterService parameterService, List<Particle> particleList) {
 		this.parameterService = parameterService;
 		this.particleList = particleList;
 	}
 	
-	public void update (double elapsedTime, ArrayList<Particle> particleList) {
+	public void update (double elapsedTime, List<Particle> particleList) {
 		this.totalTime += elapsedTime / 1000.0;
 		double x = GOAL_DISTANCE * Math.sin(totalTime / 2.0);
 		double y = GOAL_DISTANCE * Math.sin(totalTime / 3.0);

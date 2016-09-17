@@ -4,14 +4,14 @@ import etc.a0la0.particleRemix.messaging.ParameterService;
 import etc.a0la0.particleRemix.ui.DisplayFrame;
 
 import java.util.HashMap;
-
+import java.util.Map;
 
 
 public class WebSocketMessageHandler {
 	
 	private ParameterService parameterService;
 	private DisplayFrame displayFrame;
-	private HashMap<String, ParamAction> messageMap = new HashMap<String, ParamAction>();
+	private Map<String, ParamAction> messageMap = new HashMap<>();
 	
 	public WebSocketMessageHandler (ParameterService parameterService, DisplayFrame displayFrame) {
 		this.parameterService = parameterService;
@@ -51,7 +51,7 @@ public class WebSocketMessageHandler {
 	}
 	
 	private interface ParamAction {
-		public void runAction (double val);
+		void runAction (double val);
 	}
 	
 	private double normalizePositiveNegative (double val) {

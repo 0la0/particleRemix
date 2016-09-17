@@ -2,6 +2,7 @@ package etc.a0la0.particleRemix.ui;
 
 
 import java.util.HashSet;
+import java.util.Set;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import etc.a0la0.particleRemix.messaging.websocket.WebSocketMessageHandler;
@@ -34,9 +35,9 @@ public class Init extends Application {
         
         ParameterService parameterService = new ParameterService();
       
-        IDriver particleDriver = new ParticleDriver(parameterService, "particleDriver");
-        IDriver imageDriver = new ImageDriver(parameterService, "imageDriver");
-        HashSet<IDriver> driverSet = new HashSet<IDriver>();
+        DriverManager.Driver particleDriver = new ParticleDriver(parameterService, "particleDriver");
+		DriverManager.Driver imageDriver = new ImageDriver(parameterService, "imageDriver");
+        Set<DriverManager.Driver> driverSet = new HashSet<>();
         driverSet.add(particleDriver);
         driverSet.add(imageDriver);
         DriverManager driverManager = new DriverManager(driverSet);

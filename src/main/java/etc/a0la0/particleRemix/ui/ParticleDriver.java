@@ -8,7 +8,7 @@ import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 import javafx.scene.image.WritableImage;
 
-public class ParticleDriver implements IDriver {
+public class ParticleDriver implements DriverManager.Driver {
 
 	private Xform particleGroup = new Xform();
 	private final int NUM_PARTICLES = 5000;
