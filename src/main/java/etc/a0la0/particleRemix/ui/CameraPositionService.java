@@ -14,18 +14,18 @@ public class CameraPositionService {
 	}
 	
 	public Xform getCameraXform () {
-		return this.cameraXform;
+		return cameraXform;
 	}
 
 	public void update (double elapsedTime) {
-		if (this.parameterService.cameraIsInRoutine()) {
-			this.routineAngle = cameraXform.ry.getAngle() + elapsedTime * 0.1;
-			this.cameraXform.ry.setAngle(routineAngle);
+		if (parameterService.cameraIsInRoutine()) {
+			routineAngle = cameraXform.ry.getAngle() + elapsedTime * 0.1;
+			cameraXform.ry.setAngle(routineAngle);
 		}
-		if (this.routineAngle >= 360) {
-			this.routineAngle = 0;
-			this.cameraXform.ry.setAngle(this.routineAngle);
-			this.parameterService.setCameraIsInRoutine(false);
+		if (routineAngle >= 360) {
+			routineAngle = 0;
+			cameraXform.ry.setAngle(routineAngle);
+			parameterService.setCameraIsInRoutine(false);
 		}
 	}
 

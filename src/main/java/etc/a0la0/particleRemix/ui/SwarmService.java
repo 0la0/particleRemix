@@ -1,6 +1,5 @@
 package etc.a0la0.particleRemix.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
@@ -26,19 +25,19 @@ public class SwarmService {
 	}
 	
 	public void update (double elapsedTime, List<Particle> particleList) {
-		this.totalTime += elapsedTime / 1000.0;
+		totalTime += elapsedTime / 1000.0;
 		double x = GOAL_DISTANCE * Math.sin(totalTime / 2.0);
 		double y = GOAL_DISTANCE * Math.sin(totalTime / 3.0);
 		double z = GOAL_DISTANCE * Math.cos(totalTime / 4.0);
-		this.goalState = new Point3D(x, y, z);
+		goalState = new Point3D(x, y, z);
 		
-		this.meanPosition = particleList.stream()
+		meanPosition = particleList.stream()
 				.map(Particle::getPosition)
 				.reduce(new Point3D(0, 0, 0), Point3D::add)
 						//(sum, currentPoint) -> sum.add(currentPoint))
 				.multiply(1 / (particleList.size() * 1.0));
 		
-		this.meanVelocity = particleList.stream()
+		meanVelocity = particleList.stream()
 				.map(Particle::getVelocity)
 				.reduce(new Point3D(0, 0, 0), Point3D::add)
 						//(sum, currentPoint) -> sum.add(currentPoint))
@@ -47,7 +46,7 @@ public class SwarmService {
 	
 	//Boids fly toward center of flock
 	public Point3D getRuleOneVector (Particle particle) {
-		return this.meanPosition
+		return meanPosition
 				.subtract(particle.getPosition())
 				.multiply(0.001);
 	}
@@ -65,13 +64,13 @@ public class SwarmService {
 	
 	//Boids try to match the velocity of other boids
 	public Point3D getRuleThreeVector (Particle particle) {
-		return this.meanVelocity
+		return meanVelocity
 				.subtract(particle.getVelocity())
 				.multiply(0.001);
 	}
 	
 	public Point3D moveTowardGoalState (Particle particle) {
-		return this.goalState
+		return goalState
 				.subtract(particle.getPosition())
 				.multiply(parameterService.getGoalAttraction());
 	}

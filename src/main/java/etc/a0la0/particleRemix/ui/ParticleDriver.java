@@ -1,6 +1,9 @@
 package etc.a0la0.particleRemix.ui;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import etc.a0la0.particleRemix.ui.util.Xform;
@@ -12,7 +15,7 @@ public class ParticleDriver implements DriverManager.Driver {
 
 	private Xform particleGroup = new Xform();
 	private final int NUM_PARTICLES = 5000;
-	private ArrayList<Particle> particleList = new ArrayList<Particle>();
+	private List<Particle> particleList;
 	private ParameterService parameterService;
 	private SwarmService swarmService;
 	private String name;
@@ -20,21 +23,22 @@ public class ParticleDriver implements DriverManager.Driver {
 	public ParticleDriver (ParameterService parameterService, String name) {
 		this.parameterService = parameterService;
 		this.name = name;
+
+		particleList = IntStream.range(0, NUM_PARTICLES)
+				.mapToObj(index -> {
+					Color color = Color.color(Math.random(), Math.random(), Math.random());
+					Point3D position = new Point3D(getRandPosition(), getRandPosition(), 0);
+					Point3D velocity = parameterService.getVelocity();
+					double ttl = parameterService.getTtlUpperBound();
+					return new Particle(position, velocity, color, ttl);
+				})
+				.collect(Collectors.toList());
+
+		swarmService = new SwarmService(parameterService, particleList);
 		
-		//---populate particle list with particles---//
-		for (int i = 0; i < NUM_PARTICLES; i++) {
-			Color color = Color.color(Math.random(), Math.random(), Math.random());
-			Point3D position = new Point3D(getRandPosition(), getRandPosition(), 0);
-			Point3D velocity = parameterService.getVelocity();
-			double ttl = parameterService.getTtlUpperBound();
-			Particle particle = new Particle(position, velocity, color, ttl);
-			this.particleList.add(particle);
-		}
-		this.swarmService = new SwarmService(parameterService, particleList);
-		
-		this.particleList.forEach(particle -> {
-			particleGroup.getChildren().add(particle.getBox());
-		});
+		particleList.forEach(particle ->
+			particleGroup.getChildren().add(particle.getBox())
+		);
 	}
 	
 	@Override
@@ -43,9 +47,9 @@ public class ParticleDriver implements DriverManager.Driver {
 			return;
 		}
 		
-		this.swarmService.update(elapsedTime, this.particleList);
+		swarmService.update(elapsedTime, particleList);
 		
-		this.particleList.forEach((particle) -> {
+		particleList.forEach((particle) -> {
 			if (particle.isDead()) {
 				RenderPoint renderPoint = new RenderPoint(screenshot, parameterService);
 				
@@ -89,12 +93,12 @@ public class ParticleDriver implements DriverManager.Driver {
 	
 	@Override
 	public Xform getParticleGroup () {
-		return this.particleGroup;
+		return particleGroup;
 	}
 	
 	@Override
 	public String getName () {
-		return this.name;
+		return name;
 	}
 	
 	private int getRandPosition () {
@@ -107,9 +111,9 @@ public class ParticleDriver implements DriverManager.Driver {
 	
 	private Point3D getJitter () {
 		double jitterFactor = 0.01;
-		double jitterX = this.getPosNeg() * jitterFactor * Math.random();
-		double jitterY = this.getPosNeg() * jitterFactor * Math.random();
-		double jitterZ = this.getPosNeg() * jitterFactor * Math.random();
+		double jitterX = getPosNeg() * jitterFactor * Math.random();
+		double jitterY = getPosNeg() * jitterFactor * Math.random();
+		double jitterZ = getPosNeg() * jitterFactor * Math.random();
 		return new Point3D(jitterX, jitterY, jitterZ);
 	}
 	

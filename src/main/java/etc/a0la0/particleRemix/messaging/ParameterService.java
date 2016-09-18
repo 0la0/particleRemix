@@ -21,7 +21,6 @@ public class ParameterService {
 
 	public ParameterService () {}
 
-	
 	public Point3D getVelocity () {
 		return velocity;
 	}
@@ -31,15 +30,15 @@ public class ParameterService {
 	}
 	
 	public void setVelocityX (double x) {
-		this.velocity = new Point3D(x, this.velocity.getY(), this.velocity.getZ());
+		velocity = new Point3D(x, velocity.getY(), velocity.getZ());
 	}
 	
 	public void setVelocityY (double y) {
-		this.velocity = new Point3D(this.velocity.getX(), y, this.velocity.getZ());
+		velocity = new Point3D(velocity.getX(), y, velocity.getZ());
 	}
 	
 	public void setVelocityZ (double z) {
-		this.velocity = new Point3D(this.velocity.getX(), this.velocity.getY(), z);
+		velocity = new Point3D(velocity.getX(), velocity.getY(), z);
 	}
 
 	public Point3D getScale () {
@@ -51,15 +50,15 @@ public class ParameterService {
 	}
 	
 	public void setScaleX (double x) {
-		this.scale = new Point3D(x, this.scale.getY(), this.scale.getZ());
+		scale = new Point3D(x, scale.getY(), scale.getZ());
 	}
 	
 	public void setScaleY (double y) {
-		this.scale = new Point3D(this.scale.getX(), y, this.scale.getZ());
+		scale = new Point3D(scale.getX(), y, scale.getZ());
 	}
 	
 	public void setScaleZ (double z) {
-		this.scale = new Point3D(this.scale.getX(), this.scale.getY(), z);
+		scale = new Point3D(scale.getX(), scale.getY(), z);
 	}
 
 	public Point3D getRotate () {
@@ -71,15 +70,15 @@ public class ParameterService {
 	}
 	
 	public void setRotateX (double x) {
-		this.rotate = new Point3D(x, this.rotate.getY(), this.rotate.getZ());
+		rotate = new Point3D(x, rotate.getY(), rotate.getZ());
 	}
 	
 	public void setRotateY (double y) {
-		this.rotate = new Point3D(this.rotate.getX(), y, this.rotate.getZ());
+		rotate = new Point3D(rotate.getX(), y, rotate.getZ());
 	}
 	
 	public void setRotateZ (double z) {
-		this.rotate = new Point3D(this.rotate.getX(), this.rotate.getY(), z);
+		rotate = new Point3D(rotate.getX(), rotate.getY(), z);
 	}
 
 	public double getTtlUpperBound () {
@@ -99,7 +98,7 @@ public class ParameterService {
 	}
 	
 	public double getGoalAttraction () {
-		return this.goalAttraction;
+			return goalAttraction;
 	}
 	
 	public void setGoalAttraction (double goalAttraction) {
@@ -107,7 +106,7 @@ public class ParameterService {
 	}
 	
 	public boolean cameraIsInRoutine () {
-		return this.cameraIsInRoutine;
+		return cameraIsInRoutine;
 	}
 
 	public void setCameraIsInRoutine (boolean cameraIsInRoutine) {
@@ -115,7 +114,7 @@ public class ParameterService {
 	}
 	
 	public double getMotionThreshold () {
-		return this.motionThreshold;
+		return motionThreshold;
 	}
 
 	public void setMotionThreshold (double motionThreshold) {
@@ -131,7 +130,7 @@ public class ParameterService {
 	}
 	
 	public double getImageRefreshRate () {
-		return this.imageRefreshRate;
+		return imageRefreshRate;
 	}
 	
 	public void setImageRefreshRate (double imageRefreshRate) {

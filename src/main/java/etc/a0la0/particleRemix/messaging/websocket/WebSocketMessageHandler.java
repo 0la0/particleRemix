@@ -16,7 +16,7 @@ public class WebSocketMessageHandler {
 	public WebSocketMessageHandler (ParameterService parameterService, DisplayFrame displayFrame) {
 		this.parameterService = parameterService;
 		this.displayFrame = displayFrame;
-		this.initializeMap();
+		initializeMap();
 	}
 	
 	public void handleMessage (String msgKey, double msgValue) {

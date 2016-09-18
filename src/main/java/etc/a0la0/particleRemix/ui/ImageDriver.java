@@ -1,7 +1,8 @@
 package etc.a0la0.particleRemix.ui;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import etc.a0la0.particleRemix.ui.util.Xform;
@@ -16,7 +17,7 @@ import javafx.scene.paint.PhongMaterial;
 public class ImageDriver implements DriverManager.Driver {
 
 	private Xform particleGroup = new Xform();
-	private List<Particle> particleList = new ArrayList<>();
+	private List<Particle> particleList;
 	private ParameterService parameterService;
 	private String name;
 	private MeshView meshView;
@@ -32,35 +33,33 @@ public class ImageDriver implements DriverManager.Driver {
 	public ImageDriver (ParameterService parameterService, String name) {
 		this.parameterService = parameterService;
 		this.name = name;
-		
-		//---populate particle list with particles---//
-		for (int i = 0; i < NUM_PARTICLES; i++) {
-			Color color = Color.color(Math.random(), Math.random(), Math.random());
-			Point3D position = new Point3D(getRandPosition(), getRandPosition(), 0);
-			Point3D velocity = parameterService.getVelocity();
-			double ttl = parameterService.getTtlUpperBound();
-			Particle particle = new Particle(position, velocity, color, ttl);
-			this.particleList.add(particle);
-		}
-		
-		
+
 		this.meshView = this.createMesh();
-	    Group plane = new Group(this.meshView);	    
-	    this.particleGroup.getChildren().add(plane);
-	    
-	    
-	    this.particleList.forEach(particle -> {
-			particleGroup.getChildren().add(particle.getBox());
-		});
+		Group plane = new Group(this.meshView);
+		this.particleGroup.getChildren().add(plane);
+
+		particleList = IntStream.range(0, NUM_PARTICLES)
+				.mapToObj(index -> {
+					Color color = Color.color(Math.random(), Math.random(), Math.random());
+					Point3D position = new Point3D(getRandPosition(), getRandPosition(), 0);
+					Point3D velocity = parameterService.getVelocity();
+					double ttl = parameterService.getTtlUpperBound();
+					return new Particle(position, velocity, color, ttl);
+				})
+				.collect(Collectors.toList());
+
+	    particleList.forEach(particle ->
+			particleGroup.getChildren().add(particle.getBox())
+		);
 	}
 	
 	private MeshView createMesh () {
 		
 		float[] points = {
-	            -1, 1, MATERIAL_Z_INDEX,
+	            -1,  1, MATERIAL_Z_INDEX,
 	            -1, -1, MATERIAL_Z_INDEX,
-	            1, 1, MATERIAL_Z_INDEX,
-	            1, -1, MATERIAL_Z_INDEX
+	             1,  1, MATERIAL_Z_INDEX,
+	             1, -1, MATERIAL_Z_INDEX
 	    	};
 		
 		float[] texCoords = {
@@ -88,12 +87,12 @@ public class ImageDriver implements DriverManager.Driver {
 		if (screenshot == null) {
 			return;
 		}
-		if (this.parameterService.getImageRefreshRate() > 0) {
-			this.timeSinceRefresh += elapsedTime;
-			if (this.timeSinceRefresh > this.timeToNextRefresh) {
-				this.meshView.setMaterial(new PhongMaterial(Color.WHITE, screenshot, null, null, null));
-				this.timeSinceRefresh = 0;
-				this.timeToNextRefresh = this.parameterService.getImageRefreshRate() * Math.random();
+		if (parameterService.getImageRefreshRate() > 0) {
+			timeSinceRefresh += elapsedTime;
+			if (timeSinceRefresh > timeToNextRefresh) {
+				meshView.setMaterial(new PhongMaterial(Color.WHITE, screenshot, null, null, null));
+				timeSinceRefresh = 0;
+				timeToNextRefresh = parameterService.getImageRefreshRate() * Math.random();
 			}
 		}
 		else {
@@ -104,10 +103,10 @@ public class ImageDriver implements DriverManager.Driver {
 		double width = RENDER_MULTIPLIER * screenshotRatio;
 		double height = RENDER_MULTIPLIER;
 		
-		this.meshView.setScaleX(width);
-		this.meshView.setScaleY(height);
+		meshView.setScaleX(width);
+		meshView.setScaleY(height);
 		
-		this.particleList.forEach((particle) -> {
+		particleList.forEach((particle) -> {
 			if (particle.isDead()) {
 				RenderPoint renderPoint = new RenderPoint(screenshot, parameterService);
 				
@@ -150,12 +149,12 @@ public class ImageDriver implements DriverManager.Driver {
 
 	@Override
 	public Xform getParticleGroup () {
-		return this.particleGroup;
+		return particleGroup;
 	}
 	
 	@Override
 	public String getName () {
-		return this.name;
+		return name;
 	}
 	
 	private int getRandPosition () {
@@ -168,9 +167,9 @@ public class ImageDriver implements DriverManager.Driver {
 	
 	private Point3D getJitter () {
 		double jitterFactor = 0.01;
-		double jitterX = this.getPosNeg() * jitterFactor * Math.random();
-		double jitterY = this.getPosNeg() * jitterFactor * Math.random();
-		double jitterZ = this.getPosNeg() * jitterFactor * Math.random();
+		double jitterX = getPosNeg() * jitterFactor * Math.random();
+		double jitterY = getPosNeg() * jitterFactor * Math.random();
+		double jitterZ = getPosNeg() * jitterFactor * Math.random();
 		return new Point3D(jitterX, jitterY, jitterZ);
 	}
 

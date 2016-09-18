@@ -10,10 +10,10 @@ import javax.sound.midi.ShortMessage;
 
 public class MidiMessageHandler {
 	
-	private double velocityMagnitude = 64.0;
-	private double scaleMagnitude = 6.0;
-	private int base = 64;
-	private double maxValue = 127.0;
+	private final double VELOCITY_MAGNITUDE = 64.0;
+	private final double SCALE_MAGNITUDE = 6.0;
+	private final int BASE = 64;
+	private final double MAX_VALUE = 127.0;
 	
 	private ParameterService parameterService;
 	private DisplayFrame displayFrame;
@@ -26,7 +26,7 @@ public class MidiMessageHandler {
 	public MidiMessageHandler (ParameterService parameterService, DisplayFrame displayFrame) {
 		this.parameterService = parameterService;
 		this.displayFrame = displayFrame;
-		this.initializeMap();
+		initializeMap();
 	}
 	
 	public void handleMessage (ShortMessage sm) {
@@ -44,7 +44,7 @@ public class MidiMessageHandler {
 		midiMap.put(39, (ShortMessage sm) -> parameterService.setVelocityZ(getNormalizedVelocity(sm.getData2())));
 		//slider 4 => ttl
 		midiMap.put(40, (ShortMessage sm) -> {
-			double normalValue = sm.getData2() / maxValue;
+			double normalValue = sm.getData2() / MAX_VALUE;
 			double ttlUpperBound = normalValue * 3000 + 1;
 			parameterService.setTtlUpperBound(ttlUpperBound);
 		});
@@ -107,19 +107,19 @@ public class MidiMessageHandler {
 	}
 	
 	private double getNormalizedScale (int realValue) {
-		return Math.pow(realValue / scaleMagnitude, 2);
+		return Math.pow(realValue / SCALE_MAGNITUDE, 2);
 	}
 	
 	private double getNormalizedVelocity (int realValue) {
-		return (realValue - base) / velocityMagnitude;
+		return (realValue - BASE) / VELOCITY_MAGNITUDE;
 	}
 	
 	private double getNormalizedRotate (int realValue) {
-		return (realValue / maxValue) * 360;
+		return (realValue / MAX_VALUE) * 360;
 	}
 	
 	private double getNormalizedValue (int realValue) {
-		return realValue / maxValue;
+		return realValue / MAX_VALUE;
 	}
 
 }

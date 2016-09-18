@@ -23,8 +23,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
- * Transparent javafx scene lifted and modified from:
- * https://assylias.wordpress.com/2013/12/08/383/
+ * Transparent javafx scene:  https://assylias.wordpress.com/2013/12/08/383/
  */
 
 public class TransparentFrame {
@@ -37,16 +36,16 @@ public class TransparentFrame {
 	
 	public TransparentFrame (ParameterService parameterService) {
 		this.parameterService = parameterService;
-		this.motionDetector = new MotionDetectionService(parameterService);
+		motionDetector = new MotionDetectionService(parameterService);
 		
 		Stage stage = new Stage();
-		Label lbl = new Label("");
-        VBox p = new VBox(lbl);
+		Label label = new Label("");
+        VBox frame = new VBox(label);
         
-        final Delta dragDelta = new Delta();
+        final Point dragDelta = new Point();
         AtomicBoolean isResizing = new AtomicBoolean(false);
         
-        p.setOnMousePressed(mouseEvent -> {
+        frame.setOnMousePressed(mouseEvent -> {
         	if ( getIsResize(mouseEvent.getX(), mouseEvent.getY(), stage.getWidth(), stage.getHeight()) ) {
     	    	isResizing.set(true);
                 dragDelta.x = stage.getWidth() - mouseEvent.getX();
@@ -58,7 +57,7 @@ public class TransparentFrame {
             }
         });
         
-        p.setOnMouseDragged(mouseEvent -> {
+        frame.setOnMouseDragged(mouseEvent -> {
     	    if (isResizing.get()) {
     	    	stage.setWidth(mouseEvent.getX() + dragDelta.x);
                 stage.setHeight(mouseEvent.getY() + dragDelta.y);
@@ -68,12 +67,12 @@ public class TransparentFrame {
             }
         });
         
-        p.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, null)));
+        frame.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, null)));
 
-        Scene scene = new Scene(p);
+        Scene scene = new Scene(frame);
         stage.setScene(scene);
 
-        p.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
+        frame.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
         scene.setFill(null);
         stage.initStyle(StageStyle.TRANSPARENT);
 
@@ -82,37 +81,36 @@ public class TransparentFrame {
         stage.show();
         
         //Take screenshot of scene area every n milliseconds
-        Timeline timeline = new Timeline(new KeyFrame(
-            Duration.millis(50),
-            actionEvent -> {
-            	int locationX = (int) stage.getX() + 1;
-            	int locationY = (int) stage.getY() + 1;
-            	int stageWidth = (int) stage.getWidth() - 2;
-            	int stageHeight = (int) stage.getHeight() - 2;
-        		
-        		Rectangle targetArea = new Rectangle(locationX, locationY, stageWidth, stageHeight);
-        		try {
-            		setScreenCapture(new Robot().createScreenCapture(targetArea));
-				} catch (AWTException e) {
-					e.printStackTrace();
-				}
-            })
+        Timeline timeline = new Timeline(
+        		new KeyFrame(Duration.millis(50), actionEvent -> {
+					int locationX = (int) stage.getX() + 1;
+					int locationY = (int) stage.getY() + 1;
+					int stageWidth = (int) stage.getWidth() - 2;
+					int stageHeight = (int) stage.getHeight() - 2;
+
+					Rectangle targetArea = new Rectangle(locationX, locationY, stageWidth, stageHeight);
+					try {
+						setScreenCapture(new Robot().createScreenCapture(targetArea));
+					} catch (AWTException e) {
+						e.printStackTrace();
+					}
+				})
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 	}
-	
-	private void setScreenCapture (BufferedImage screenCapture) {
-		this.previousScreenshot = this.currentScreenshot;
-		this.currentScreenshot = SwingFXUtils.toFXImage(screenCapture, null);	
-		
-		if (this.parameterService.getMotionThreshold() > 0) {
-			this.motionDetector.runMotionDetection(this.currentScreenshot, this.previousScreenshot);
-		}
+
+	public WritableImage getScreenshot () {
+		return currentScreenshot;
 	}
 	
-	public WritableImage getScreenshot () {
-		return this.currentScreenshot;
+	private void setScreenCapture (BufferedImage screenCapture) {
+		previousScreenshot = currentScreenshot;
+		currentScreenshot = SwingFXUtils.toFXImage(screenCapture, null);
+		
+		if (parameterService.getMotionThreshold() > 0) {
+			motionDetector.runMotionDetection(currentScreenshot, previousScreenshot);
+		}
 	}
 	
 	private boolean getIsResize (double mouseX, double mouseY, double stageWidth, double stageHeight) {
@@ -121,6 +119,6 @@ public class TransparentFrame {
         return mouseInOnRight && mouseIsOnBottom;
 	}
 	
-	private class Delta { double x, y; }
+	private class Point { double x, y; }
 	
 }

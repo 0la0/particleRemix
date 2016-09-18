@@ -37,19 +37,20 @@ public class MotionDetectionService {
 		
 		currentPixelBuffer.getPixels(0, 0, width, height, format, thisBuffer, 0, width);
 		previousPixelBuffer.getPixels(0, 0, width, height, format, previousBuffer, 0, width);
-		
+
 		List<Point2D> pointList = new ArrayList<>();
-		
+
+		//TODO: replace with filter -> map
 		for (int i = 0; i < thisBuffer.length; i++) {
-			double colorDistance = this.getColorDistance(thisBuffer[i], previousBuffer[i]);
-			if (colorDistance > this.parameterService.getMotionThreshold()) {
+			double colorDistance = getColorDistance(thisBuffer[i], previousBuffer[i]);
+			if (colorDistance > parameterService.getMotionThreshold()) {
 				int x = i % width;
 				int y = i / width;
 				pointList.add(new Point2D(x, y));
 			}
 		}
 		
-		this.parameterService.setMotionPointList(pointList);
+		parameterService.setMotionPointList(pointList);
 	}
 	
 	private double getColorDistance (int thisImage, int previousImage) {

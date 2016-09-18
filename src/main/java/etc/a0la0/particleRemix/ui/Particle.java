@@ -14,10 +14,7 @@ public class Particle {
 	private Point3D position;
 	private Point3D velocity;
 	private double ttl;
-	
-	private PhongMaterial material;
 	private Box box;
-	private Color difuseColor = null;
 	
 	private Rotate rx = new Rotate(0, Rotate.X_AXIS);
 	private Rotate ry = new Rotate(0, Rotate.Y_AXIS);
@@ -28,78 +25,78 @@ public class Particle {
 	
 	
 	public Particle (Point3D position, Point3D velocity, Color color, double ttl) {
-		this.box = new Box(PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_SIZE);
-		this.box.getTransforms().addAll(rz, ry, rx, sx, sy, sz);
-		this.reset(position, velocity, color, ttl);
+		box = new Box(PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_SIZE);
+		box.getTransforms().addAll(rz, ry, rx, sx, sy, sz);
+		reset(position, velocity, color, ttl);
 	}
 	
 	public void reset (Point3D position, Point3D velocity, Color color, double ttl) {
 		this.position = position;
 		this.velocity = velocity;
 		this.ttl = ttl;
-		this.setColor(color);
+		setColor(color);
 	}
 	
 	public Box getBox () {
-		return this.box;
+		return box;
 	}
 	
 	public void update (double elapsedTime, Point3D wind, Point3D scale, Point3D rotation) {
-		this.ttl -= elapsedTime;
+		ttl -= elapsedTime;
 		
-		this.velocity = this.velocity.add(wind);		
-		this.position = this.position.add(this.velocity);
+		velocity = velocity.add(wind);		
+		position = position.add(velocity);
 		
-		this.setTranslate(this.position);
-		this.setRotate(rotation);
-		this.setScale(scale);
+		setTranslate(position);
+		setRotate(rotation);
+		setScale(scale);
 	}
 
 	public void setColor (Color color) {
-		this.difuseColor = color;
-		this.material = new PhongMaterial();
-		this.material.setDiffuseColor(this.difuseColor);
-		this.box.setMaterial(this.material);
+		Color difuseColor = color;
+		PhongMaterial material = new PhongMaterial();
+		material.setDiffuseColor(difuseColor);
+		box.setMaterial(material);
 	}
 	
 	public boolean isDead () {
-		return this.ttl <= 0;
+		return ttl <= 0;
 	}
 	
 	public Point3D getPosition () {
-		return this.position;
+		return position;
 	}
 	
 	public Point3D getVelocity () {
-		return this.velocity;
+		return velocity;
 	}
 	
 	private void setTranslate (Point3D translate) {
-		this.box.setTranslateX(translate.getX());
-		this.box.setTranslateY(translate.getY());
-		this.box.setTranslateZ(translate.getZ());
+		box.setTranslateX(translate.getX());
+		box.setTranslateY(translate.getY());
+		box.setTranslateZ(translate.getZ());
 	}
 	
 	private void setScale (Point3D scale) {
-		this.sx.setX(scale.getX());
-		this.sy.setY(scale.getY());
-		this.sz.setZ(scale.getZ());
+		sx.setX(scale.getX());
+		sy.setY(scale.getY());
+		sz.setZ(scale.getZ());
 	}
 	
 	private void setRotate (Point3D rotation) {
-		this.rx.setAngle(rotation.getX());
-		this.ry.setAngle(rotation.getY());
-		this.rz.setAngle(rotation.getZ());
+		rx.setAngle(rotation.getX());
+		ry.setAngle(rotation.getY());
+		rz.setAngle(rotation.getZ());
 	}
 	
 	public void setPivotX (double pivotX) {
-		this.sx.setPivotX(pivotX);
-		this.rx.setPivotX(pivotX);
+		sx.setPivotX(pivotX);
+		rx.setPivotX(pivotX);
 	}
 	
 	public void setPivotY (double pivotY) {
-		this.sx.setPivotY(pivotY);
-		this.rx.setPivotY(pivotY);
+		sx.setPivotY(pivotY);
+		rx.setPivotY(pivotY);
 	}
 	
 }

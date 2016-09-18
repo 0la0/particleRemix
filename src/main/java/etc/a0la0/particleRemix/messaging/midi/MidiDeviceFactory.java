@@ -7,6 +7,7 @@ package etc.a0la0.particleRemix.messaging.midi;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
@@ -24,7 +25,7 @@ public class MidiDeviceFactory {
 	public static void refreshDevices () {
 		transmitters = new ArrayList<>();
 		receivers = new ArrayList<>();
-		
+
 		MidiDevice.Info[] deviceInfo = MidiSystem.getMidiDeviceInfo();
 		for (int i = 0; i < deviceInfo.length; i++) {
 			try {
@@ -39,24 +40,22 @@ public class MidiDeviceFactory {
 	}
 	
 	public static String[] getTransmitters () {
-		String[] transmitterStrings = new String[transmitters.size()];
-		for (int i = 0; i < transmitters.size(); i++) {
-			transmitterStrings[i] = transmitters.get(i).getDeviceInfo().toString();
-		}
-		return transmitterStrings;
+		return (String[]) transmitters.stream()
+				.map(transmitter -> transmitter.getDeviceInfo().toString())
+				.collect(Collectors.toList())
+				.toArray();
 	}
 	
 	public static String[] getReceivers () {
-		String[] receiverStrings = new String[receivers.size()];
-		for (int i = 0; i < receivers.size(); i++) {
-			receiverStrings[i] = receivers.get(i).getDeviceInfo().toString();
-		}
-		return receiverStrings;
+		return (String[]) receivers.stream()
+				.map(receiver -> receiver.getDeviceInfo().toString())
+				.collect(Collectors.toList())
+				.toArray();
 	}
 	
 	public static Transmitter getTransmitter (String deviceInfo) {
 		for (MidiDevice midiDevice : transmitters) {
-			if (midiDevice.getDeviceInfo().toString().compareTo(deviceInfo) == 0) {
+			if (midiDevice.getDeviceInfo().toString().equals(deviceInfo)) {
 				try {
 					return midiDevice.getTransmitter();
 				} catch (MidiUnavailableException e) {

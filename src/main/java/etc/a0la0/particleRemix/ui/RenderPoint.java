@@ -18,55 +18,55 @@ class RenderPoint {
 	public RenderPoint (WritableImage screenshot, ParameterService parameterService) {
 		this.parameterService = parameterService;
 		
-		if (this.parameterService.getMotionThreshold() > 0) {
-			if (this.parameterService.getMotionPointList().size() > 0) {
+		if (parameterService.getMotionThreshold() > 0) {
+			if (parameterService.getMotionPointList().size() > 0) {
 				//get sample point from lookup
-				int randIndex = (int) (this.parameterService.getMotionPointList().size() * Math.random());
-				Point2D samplePoint = this.parameterService.getMotionPointList().get(randIndex);
-				this.samplePointX = (int) samplePoint.getX();
-				this.samplePointY = (int) samplePoint.getY();
+				int randIndex = (int) (parameterService.getMotionPointList().size() * Math.random());
+				Point2D samplePoint = parameterService.getMotionPointList().get(randIndex);
+				samplePointX = (int) samplePoint.getX();
+				samplePointY = (int) samplePoint.getY();
 			}
 			else {
-				this.nothingToRender = true;
+				nothingToRender = true;
 			}
 		}
 		else {
 			int imageWidth = (int) screenshot.getWidth();
 			int imageHeight = (int) screenshot.getHeight();
-			this.samplePointX = (int) (imageWidth * Math.random());
-			this.samplePointY = (int) (imageHeight * Math.random());
+			samplePointX = (int) (imageWidth * Math.random());
+			samplePointY = (int) (imageHeight * Math.random());
 		}
 		
-		this.color = screenshot.getPixelReader()
-					.getColor(this.samplePointX, this.samplePointY);
+		color = screenshot.getPixelReader()
+					.getColor(samplePointX, samplePointY);
 		
-		this.renderPosition = new Point3D(
-				-this.samplePointX + (screenshot.getWidth() / 2),
-				-this.samplePointY + (screenshot.getHeight() / 2),
+		renderPosition = new Point3D(
+				-samplePointX + (screenshot.getWidth() / 2),
+				-samplePointY + (screenshot.getHeight() / 2),
 				0);
 	}
 	
 	public Point3D getRenderPosition () {
-		return this.renderPosition;
+		return renderPosition;
 	}
 	
 	public Color getColor () {
-		return this.color;
+		return color;
 	}
 	
 	public Point3D createNewVelocity () {
-		double x = this.parameterService.getInitialVelocity() * this.getPosNeg() * Math.random();
-		double y = this.parameterService.getInitialVelocity() * this.getPosNeg() * Math.random();
-		double z = this.parameterService.getInitialVelocity() * this.getPosNeg() * Math.random();
+		double x = parameterService.getInitialVelocity() * getPosNeg() * Math.random();
+		double y = parameterService.getInitialVelocity() * getPosNeg() * Math.random();
+		double z = parameterService.getInitialVelocity() * getPosNeg() * Math.random();
 		return new Point3D(x, y, z);
 	}
 	
 	public double getTTL () {
-		return this.parameterService.getTtlUpperBound() * Math.random();
+		return parameterService.getTtlUpperBound() * Math.random();
 	}
 	
 	public boolean hasNothingToRender () {
-		return this.nothingToRender;
+		return nothingToRender;
 	}
 	
 	private int getPosNeg () {

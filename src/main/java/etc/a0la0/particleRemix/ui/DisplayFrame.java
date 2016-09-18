@@ -29,9 +29,9 @@ public class DisplayFrame {
 		this.camerPosition = camerPosition;
 		
 		root.getChildren().add(world);
-		//this.scene = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);
-		this.subScene = new SubScene(root, width, height);
-		this.subScene.setFill(Color.BLACK);
+		//scene = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);
+		subScene = new SubScene(root, width, height);
+		subScene.setFill(Color.BLACK);
 		
 		AmbientLight light = new AmbientLight();
 	    light.setColor(Color.WHITE);
@@ -39,29 +39,29 @@ public class DisplayFrame {
 	    lightGroup.getChildren().add(light);
 	    root.getChildren().add(lightGroup);
 	    
-	    this.world.getChildren().addAll(driverManager.getActiveDriver().getParticleGroup());
+	    world.getChildren().addAll(driverManager.getActiveDriver().getParticleGroup());
 	    
 		//DraggableFxWorld creates a 3D draggable world given a scene
-		this.draggableWorld = new DraggableFxWorld(this.subScene, this.root, this.camerPosition.getCameraXform());
+		draggableWorld = new DraggableFxWorld(subScene, root, camerPosition.getCameraXform());
 	}
 
 	public void update (double elapsedTime, WritableImage screenshot) {
-		this.driverManager.getActiveDriver().update(elapsedTime, screenshot);
-		this.camerPosition.update(elapsedTime);
+		driverManager.getActiveDriver().update(elapsedTime, screenshot);
+		camerPosition.update(elapsedTime);
 	}
 	
 	public SubScene getSubScene () {
-		return this.subScene;
+		return subScene;
 	}
 		
 	public void setFullscreen (boolean isFullscreen, double w, double h) {
 		if (isFullscreen) {
-			this.subScene.setWidth(w);
-			this.subScene.setHeight(h);
+			subScene.setWidth(w);
+			subScene.setHeight(h);
 		}
 		else {
-			this.subScene.setWidth(width);
-			this.subScene.setHeight(height);
+			subScene.setWidth(width);
+			subScene.setHeight(height);
 		}
 	}
 	
