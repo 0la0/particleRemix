@@ -74,9 +74,7 @@ public class DisplayFrame {
 	}
 	
 	public void setCameraDistance (double cameraDistance) {
-		Platform.runLater(() -> {
-			draggableWorld.setCameraDistance(cameraDistance);
-		});
+		Platform.runLater(() -> draggableWorld.setCameraDistance(cameraDistance));
 	}
 	
 }

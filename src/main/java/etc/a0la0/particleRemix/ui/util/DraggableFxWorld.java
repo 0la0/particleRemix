@@ -48,38 +48,38 @@ public class DraggableFxWorld {
 	 */
 	public void handleMouse(SubScene scene) {
 		
-		scene.setOnMousePressed((MouseEvent e) -> {
-			mousePosX = e.getSceneX();
-			mousePosY = e.getSceneY();
-			mouseOldX = e.getSceneX();
-			mouseOldY = e.getSceneY();
+		scene.setOnMousePressed(mouseEvent -> {
+			mousePosX = mouseEvent.getSceneX();
+			mousePosY = mouseEvent.getSceneY();
+			mouseOldX = mouseEvent.getSceneX();
+			mouseOldY = mouseEvent.getSceneY();
 		});
 		
-		scene.setOnMouseDragged((MouseEvent e) -> {
+		scene.setOnMouseDragged(mouseEvent -> {
 			mouseOldX = mousePosX;
 			mouseOldY = mousePosY;
-			mousePosX = e.getSceneX();
-			mousePosY = e.getSceneY();
+			mousePosX = mouseEvent.getSceneX();
+			mousePosY = mouseEvent.getSceneY();
 			mouseDeltaX = (mousePosX - mouseOldX);
 			mouseDeltaY = (mousePosY - mouseOldY);
 
 			double modifier = 1.0;
 			double modifierFactor = 0.1;
 
-			if (e.isControlDown()) {
+			if (mouseEvent.isControlDown()) {
 				modifier = 0.1;
 			}
-			if (e.isShiftDown()) {
+			if (mouseEvent.isShiftDown()) {
 				modifier = 10.0;
 			}
-			if (e.isPrimaryButtonDown()) {
+			if (mouseEvent.isPrimaryButtonDown()) {
 				cameraXform.ry.setAngle(cameraXform.ry.getAngle() - mouseDeltaX * modifierFactor * modifier * 2.0);  // +
 				cameraXform.rx.setAngle(cameraXform.rx.getAngle() + mouseDeltaY * modifierFactor * modifier * 2.0);  // -
-			} else if (e.isSecondaryButtonDown()) {
+			} else if (mouseEvent.isSecondaryButtonDown()) {
 				double z = camera.getTranslateZ();
 				double newZ = z + mouseDeltaX * modifierFactor * modifier;
 				camera.setTranslateZ(newZ);
-			} else if (e.isMiddleButtonDown()) {
+			} else if (mouseEvent.isMiddleButtonDown()) {
 				cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX * modifierFactor * modifier * 0.3);  // -
 				cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY * modifierFactor * modifier * 0.3);  // -
 			}

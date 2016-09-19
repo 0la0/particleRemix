@@ -34,9 +34,9 @@ public class ImageDriver implements DriverManager.Driver {
 		this.parameterService = parameterService;
 		this.name = name;
 
-		this.meshView = this.createMesh();
-		Group plane = new Group(this.meshView);
-		this.particleGroup.getChildren().add(plane);
+		meshView = createMesh();
+		Group plane = new Group(meshView);
+		particleGroup.getChildren().add(plane);
 
 		particleList = IntStream.range(0, NUM_PARTICLES)
 				.mapToObj(index -> {

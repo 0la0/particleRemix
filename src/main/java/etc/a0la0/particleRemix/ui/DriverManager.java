@@ -28,7 +28,7 @@ public class DriverManager {
 	}
 	
 	public Driver getActiveDriver () {
-		return this.activeDriver;
+		return activeDriver;
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
+import etc.a0la0.particleRemix.messaging.midi.MidiMessageHandler;
+import etc.a0la0.particleRemix.messaging.midi.MidiServer;
 import etc.a0la0.particleRemix.messaging.websocket.WebSocketMessageHandler;
 import etc.a0la0.particleRemix.messaging.websocket.WsServer;
 import javafx.animation.AnimationTimer;
@@ -69,25 +71,25 @@ public class Init extends Application {
         
         timer.start();
         
-        scene.setOnKeyPressed((KeyEvent e) -> {
-			if (e.getCode() == KeyCode.SPACE || e.getCode() == KeyCode.ESCAPE) {
+        scene.setOnKeyPressed(keyEvent -> {
+			if (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ESCAPE) {
 				isFullscreen = !isFullscreen;
 				primaryStage.setFullScreen(isFullscreen);
 			}
 		});
         
-        primaryStage.setOnCloseRequest((WindowEvent e) -> {
+        primaryStage.setOnCloseRequest(windowEvent -> {
         	Platform.exit();
         	System.exit(0);
         });
         
         //create midi server for controlling parameters
         //midi is an arbitrary choice, as any HMI could control the pramaters
-        //MidiMessageHandler midiHandler = new MidiMessageHandler(parameterService, displayFrame);
-        //new MidiServer(midiHandler);
+        MidiMessageHandler midiHandler = new MidiMessageHandler(parameterService, displayFrame);
+        new MidiServer(midiHandler);
         
-        WebSocketMessageHandler wsHandler = new WebSocketMessageHandler(parameterService, displayFrame);
-        new WsServer(wsHandler);
+//        WebSocketMessageHandler wsHandler = new WebSocketMessageHandler(parameterService, displayFrame);
+//        new WsServer(wsHandler);
 	}
 	
 	public static void main (String[] args) {

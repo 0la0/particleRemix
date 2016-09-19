@@ -3,6 +3,8 @@ package etc.a0la0.particleRemix.ui;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import javafx.geometry.Point2D;
@@ -38,17 +40,17 @@ public class MotionDetectionService {
 		currentPixelBuffer.getPixels(0, 0, width, height, format, thisBuffer, 0, width);
 		previousPixelBuffer.getPixels(0, 0, width, height, format, previousBuffer, 0, width);
 
-		List<Point2D> pointList = new ArrayList<>();
-
-		//TODO: replace with filter -> map
-		for (int i = 0; i < thisBuffer.length; i++) {
-			double colorDistance = getColorDistance(thisBuffer[i], previousBuffer[i]);
-			if (colorDistance > parameterService.getMotionThreshold()) {
-				int x = i % width;
-				int y = i / width;
-				pointList.add(new Point2D(x, y));
-			}
-		}
+		List<Point2D> pointList = IntStream.range(0, thisBuffer.length)
+				.filter(index -> {
+					double colorDistance = getColorDistance(thisBuffer[index], previousBuffer[index]);
+					return colorDistance > parameterService.getMotionThreshold();
+				})
+				.mapToObj(index -> {
+					int x = index % width;
+					int y = index / width;
+					return new Point2D(x, y);
+				})
+				.collect(Collectors.toList());
 		
 		parameterService.setMotionPointList(pointList);
 	}

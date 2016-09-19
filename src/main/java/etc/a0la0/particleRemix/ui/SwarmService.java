@@ -34,13 +34,11 @@ public class SwarmService {
 		meanPosition = particleList.stream()
 				.map(Particle::getPosition)
 				.reduce(new Point3D(0, 0, 0), Point3D::add)
-						//(sum, currentPoint) -> sum.add(currentPoint))
 				.multiply(1 / (particleList.size() * 1.0));
 		
 		meanVelocity = particleList.stream()
 				.map(Particle::getVelocity)
 				.reduce(new Point3D(0, 0, 0), Point3D::add)
-						//(sum, currentPoint) -> sum.add(currentPoint))
 				.multiply(1 / (particleList.size() * 1.0));
 	}
 	
