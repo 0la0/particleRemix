@@ -7,18 +7,18 @@ import java.util.Set;
 import etc.a0la0.particleRemix.messaging.ParameterService;
 import etc.a0la0.particleRemix.messaging.midi.MidiMessageHandler;
 import etc.a0la0.particleRemix.messaging.midi.MidiServer;
+import etc.a0la0.particleRemix.messaging.osc.OscMessageHandler;
+import etc.a0la0.particleRemix.messaging.osc.OscServer;
 import etc.a0la0.particleRemix.messaging.websocket.WebSocketMessageHandler;
 import etc.a0la0.particleRemix.messaging.websocket.WsServer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 public class Init extends Application {
@@ -31,12 +31,12 @@ public class Init extends Application {
 	public void start (Stage primaryStage) {
 		int displayWidth = 500;
 		int displayHeight = 400;
-		
+
 		Group root = new Group();
         Scene scene = new Scene(root, displayWidth, displayHeight, Color.LIGHTGREEN);
-        
+
         ParameterService parameterService = new ParameterService();
-      
+
         DriverManager.Driver particleDriver = new ParticleDriver(parameterService, "particleDriver");
 		DriverManager.Driver imageDriver = new ImageDriver(parameterService, "imageDriver");
         Set<DriverManager.Driver> driverSet = new HashSet<>();
@@ -44,12 +44,12 @@ public class Init extends Application {
         driverSet.add(imageDriver);
         DriverManager driverManager = new DriverManager(driverSet);
         driverManager.setActiveDriverByName("particleDriver");
-        
+
         CameraPositionService cameraPosition = new CameraPositionService(parameterService);
         DisplayFrame displayFrame = new DisplayFrame(displayWidth, displayHeight, driverManager, cameraPosition);
-        
+
         TransparentFrame transparentFrame = new TransparentFrame(parameterService);
-        
+
         //---CREATE TIMER AND START---//
 		this.lastTime = System.nanoTime();
 		AnimationTimer timer = new AnimationTimer() {
@@ -59,25 +59,25 @@ public class Init extends Application {
 				displayFrame.update(elapsedTime, transparentFrame.getScreenshot());
 			}
 		};
-        
+
 		BorderPane pane = new BorderPane();
 		pane.setCenter(displayFrame.getSubScene());
 		scene.setRoot(pane);
 		primaryStage.setScene(scene);
         primaryStage.show();
-        
+
         displayFrame.getSubScene().heightProperty().bind(pane.heightProperty());
         displayFrame.getSubScene().widthProperty().bind(pane.widthProperty());
-        
+
         timer.start();
-        
+
         scene.setOnKeyPressed(keyEvent -> {
 			if (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ESCAPE) {
 				isFullscreen = !isFullscreen;
 				primaryStage.setFullScreen(isFullscreen);
 			}
 		});
-        
+
         primaryStage.setOnCloseRequest(windowEvent -> {
         	Platform.exit();
         	System.exit(0);
@@ -85,11 +85,14 @@ public class Init extends Application {
         
         //create midi server for controlling parameters
         //midi is an arbitrary choice, as any HMI could control the pramaters
-        MidiMessageHandler midiHandler = new MidiMessageHandler(parameterService, displayFrame);
-        new MidiServer(midiHandler);
+//        MidiMessageHandler midiHandler = new MidiMessageHandler(parameterService, displayFrame);
+//        new MidiServer(midiHandler);
         
 //        WebSocketMessageHandler wsHandler = new WebSocketMessageHandler(parameterService, displayFrame);
 //        new WsServer(wsHandler);
+
+		OscMessageHandler oscHandler = new OscMessageHandler(parameterService, displayFrame);
+		new OscServer(oscHandler);
 	}
 	
 	public static void main (String[] args) {
